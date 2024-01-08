@@ -1,0 +1,541 @@
+/* Global styles */
+body {
+    background-image: url("/static/images/test1.png");
+    background-color: #1c1c1c;
+    color: #fff;
+    padding: 0;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Header and footer styles */
+header, footer {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    padding: 40px;
+    text-align: center;
+}
+
+/* Heading styles */
+h1, h2, h3 {
+    font-family: 'Work Sans', sans-serif;
+}
+
+/* Image styles */
+.header-img, .header-img2 {
+    position: relative; /* Set the position to relative to position the pseudo-element */
+    margin-top: 50px;
+    border-radius: 50%;
+    animation: fadeIn 1s ease-in-out;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Hide any parts of the pseudo-element that go outside the parent */
+}
+
+.header-img::before, .header-img2::before {
+    content: "";
+    position: absolute;
+    top: -5px; /* Adjust based on border width */
+    left: -5px; /* Adjust based on border width */
+    right: -5px; /* Adjust based on border width */
+    bottom: -5px; /* Adjust based on border width */
+    z-index: -1; /* Place it behind the image */
+    border-radius: inherit; /* Inherit the border-radius from the parent */
+    background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+    box-sizing: border-box;
+}
+.header-img:hover, .header-img2:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+}
+
+.fit-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    margin-top: 20px;
+}
+.fit-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    margin-bottom: 20px ;
+}
+
+.fit-image:hover {
+    transform: scale(1.05);
+}
+
+/* Alert styles */
+.alert, .alert2 {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    background: linear-gradient(90deg, rgba(6, 127, 127, 1) 0%, rgba(212, 35, 143, 1) 100%);
+
+    transform: translate(-50%, -50%);
+    background-color: #343a40;
+    color: #fff;
+    margin-top: 50px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Common styles for .alert and .alert2 */
+.alert button, .alert2 button {
+    margin-left: 10px;
+    background: linear-gradient(90deg, rgba(6, 127, 127, 1) 0%, rgba(212, 35, 143, 1) 100%);
+    -webkit-background-clip: text;
+    color: bold;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* Hover styles for .alert and .alert2 */
+.alert button:hover, .alert2 button:hover {
+    background-color: #218838;
+    background: linear-gradient(90deg, rgba(6, 127, 127, 1) 0%, rgba(212, 35, 143, 1) 100%);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+/* Loading screen styles */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background-image: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%), url("/static/images/dumbells.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+@media (max-width: 768px) {
+    #loading-screen {
+        background-size: contain;  /* Adjusts the size for mobile, or use 'cover' if preferred */
+    }
+}
+
+
+/* Header text styles */
+.header-text, .header-text2 {
+    font-size: 48px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    text-stroke: 2px #28a745;
+    text-fill-color: transparent;
+    margin-top: 20px;
+}
+
+.header-text {
+    margin-bottom: 40px;
+}
+
+/* Section styles */
+.feature-section, .info-section, .fitness-tips,
+.feature-section2, .info-section2, .fitness-tips2 {
+    background-color: #343a40;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    animation: fadeIn 1s ease-in-out;
+}
+.feature-section h2 {
+    position: relative; /* Set the position to relative to position the pseudo-element */
+    display: inline-block; /* This ensures the border surrounds the text and not the entire width */
+    padding: 5px; /* Adjust padding to make space for the border */
+}
+
+.feature-section h2::before {
+    content: "";
+    position: absolute;
+    top: -5px; /* Adjust based on border width */
+    left: -5px; /* Adjust based on border width */
+    right: -5px; /* Adjust based on border width */
+    bottom: -5px; /* Adjust based on border width */
+    z-index: -1; /* Place it behind the text */
+    background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+    box-sizing: border-box;
+}
+
+h1, h2, h3 {
+    position: relative; /* Set the position to relative to position the pseudo-element */
+    display: inline-block; /* This ensures the border surrounds the text and not the entire width */
+    padding: 5px; /* Adjust padding to make space for the border */
+}
+
+h1::before, h2::before, h3::before {
+    content: "";
+    position: absolute;
+    top: -5px; /* Adjust based on border width */
+    left: -5px; /* Adjust based on border width */
+    right: -5px; /* Adjust based on border width */
+    bottom: -5px; /* Adjust based on border width */
+    z-index: -1; /* Place it behind the text */
+    background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+    box-sizing: border-box;
+}
+
+.feature-section h2, .info-section h3, .fitness-tips h2,
+.feature-section2 h2, .info-section2 h3, .fitness-tips2 h2 {
+    font-size: 36px;
+    color: #28a745;
+    margin-bottom: 20px;
+}
+
+.feature-section p, .info-section ul, .fitness-tips p,
+.feature-section2 p, .info-section2 ul, .fitness-tips2 p {
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* Button styles */
+.cta-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 18px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    display: inline-block;
+}
+
+.cta-btn:hover {
+    background-color: #218838;
+}
+
+/* Card styles */
+.info-section .card {
+    background-color: #2c2c2c;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+/* Icon styles */
+.fitness-icon {
+    font-size: 48px;
+    color: #28a745;
+    margin-bottom: 20px;
+}
+
+/* Scroll image styles */
+.scroll-image {
+    max-width: 100%;
+    height: auto;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+.scroll-image.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Navbar styles */
+.navbar {
+    background-color: #343a40;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    padding: 0.5rem 1rem;
+}
+
+.navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    margin-left: 20px;
+}
+
+.navbar-nav {
+    margin-right: 20px;
+}
+
+.nav-link {
+    color: #fff;
+    font-size: 18px;
+    margin-right: 20px;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #28a745;
+}
+
+.navbar-toggler {
+    border: none;
+    background-color: transparent;
+    color: #fff;
+    font-size: 24px;
+    margin-right: 20px;
+}
+
+.navbar-toggler:focus, .navbar-toggler:active {
+    outline: none;
+}
+
+.navbar-toggler-icon {
+    background-image: url('path/to/hamburger-icon.png');
+    width: 30px;
+    height: 30px;
+    background-size: cover;
+}
+
+/* Animation styles */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-30px); }
+    60% { transform: translateY(-15px); }
+}
+
+@keyframes slideUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.header-img, .header-img2 { animation: bounce 2s ease infinite; }
+
+/* Footer styles */
+footer {
+    background-color: #343a40;
+    padding: 30px 0;
+    color: white;
+    font-size: 18px;
+    margin-top: 50px;
+}
+
+footer h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+footer ul {
+    list-style: none;
+    padding: 0;
+}
+
+footer ul li {
+    margin: 5px 0;
+}
+
+footer ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Arnold Schwarzenegger Section styles */
+#fitness-revolution {
+    background-position: center;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    position: relative;
+    margin-bottom: 50px;
+}
+
+#fitness-revolution:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#fitness-revolution h2 {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#fitness-revolution p {
+    font-size: 24px;
+    margin-bottom: 40px;
+    animation: slide-up 1s ease-in-out;
+}
+
+#fitness-revolution img {
+    width: 200px;
+    height: auto;
+    border-radius: 50%;
+    transition: transform 0.3s ease-in-out;
+}
+
+#fitness-revolution img:hover {
+    transform: scale(1.1);
+}
+
+/* Lady Image Section styles */
+.lady-section h2 {
+    position: relative; /* Set the position to relative to position the pseudo-element */
+    display: inline-block; /* This ensures the border surrounds the text and not the entire width */
+    padding: 5px; /* Adjust padding to make space for the border */
+}
+
+.lady-section h2::before {
+    content: "";
+    position: absolute;
+    top: -5px; /* Adjust based on border width */
+    left: -5px; /* Adjust based on border width */
+    right: -5px; /* Adjust based on border width */
+    bottom: -5px; /* Adjust based on border width */
+    z-index: -1; /* Place it behind the text */
+    background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+    box-sizing: border-box;
+}
+/* New Styles */
+.why-fittrack h2, .fitness-plans h2, .testimonials h2 {
+    font-size: 36px;
+    color: #FFC107;
+    margin-bottom: 20px;
+}
+
+.why-fittrack p, .fitness-plans p, .testimonials p {
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* Newsletter and social section styles */
+.newsletter-social {
+    background-color: #2c2c2c;
+    padding: 30px 0;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+}
+
+.newsletter-social h2 {
+    font-size: 2.4em;
+    color: #28a745;
+    margin-bottom: 20px;
+}
+
+.newsletter-social form {
+    display: inline-block;
+}
+
+.newsletter-social input {
+    padding: 10px;
+    border: none;
+    border-radius: 5px 0 0 5px;
+    margin-right: -5px;
+}
+
+.newsletter-social button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+}
+
+.newsletter-social .social-icons i {
+    margin: 0 10px;
+    cursor: pointer;
+    font-size: 24px;
+    color: #fff;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    body {
+        font-size: 16px;
+    }
+
+    header, footer {
+        padding: 20px;
+    }
+
+    h1, h2, h3 {
+        font-size: 24px;
+    }
+
+    .header-text, .header-text2 {
+        font-size: 36px;
+    }
+
+    .cta-btn {
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+
+    .navbar {
+        padding: 10px;
+    }
+
+    .nav-link {
+        font-size: 16px;
+        margin-right: 10px;
+    }
+
+    .navbar-toggler {
+        font-size: 20px;
+    }
+
+    .navbar-toggler-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .header-img, .header-img2 {
+        margin-top: 50px;
+    }
+
+    .fit-image, .scroll-image {
+        width: 100%;
+        height: auto;
+    }
+
+    .info-section .card, .newsletter-social {
+        margin: 10px 0;
+    }
+
+    .newsletter-social form {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .newsletter-social input,
+    .newsletter-social button {
+        width: 48%;
+        margin: 1%;
+    }
+
+    #fitness-revolution img {
+        width: 150px;
+    }
+}

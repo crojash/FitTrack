@@ -1,0 +1,21 @@
+.tdee-container {
+    background-color: #131212;
+    border: 1px solid #36A2EB;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    
+}
+
+.tdee-label {
+    font-size: 1.2em;
+    color: #36A2EB;
+}
+
+.tdee-value {
+    font-size: 2em;
+    font-weight: bold;
+    color: #36A2EB; /* Adjust the color as desired */
+    margin-top: 10px;
+}

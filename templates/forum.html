@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FitTrack-Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link rel="stylesheet" type="text/css" href="static/dashboardstyles.css">
+    <link rel="stylesheet" type="text/css" href="static/sidebarstyles.css">
+    <link rel="stylesheet" type="text/css" href="static/bmr.css">
+    <link rel="stylesheet" type="text/css" href="static/tdee.css">
+    <link rel="stylesheet" type="text/css" href="static/dailylimit.css">
+    <link rel="stylesheet" type="text/css" href="static/dashboardchartscss.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/scripts/fetchchathistory.js"></script>
+    <script src="/static/scripts/calories.js"></script>
+    <script src="/static/scripts/togglechat.js"></script>
+    <script src="/static/scripts/chat.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/navbarstyles.css">
+
+
+
+    <!-- just some general stuff -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Forum</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/x-icon" href="static/logo.png">
+  </head>
+  <body> <!-- page body goes here -->
+    <div class="container mt-4">
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-dark rounded">
+          <a class="navbar-brand" href="#" style="margin-left: 48px; background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">FitTrack</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+  
+          <!-- Full Page Menu -->
+          <div class="fullPageMenu" id="nav">
+              <div class="banner">
+                  <img src="/static/images/test1.png" alt="image">
+              </div>
+              <div class="nav">
+                  <ul>
+                      <li><a href="/" data-text="Home">Home</a></li>
+                      <li><a href="/login" data-text="Login">Login</a></li>
+                      <li><a href="/logout" data-text="Logout">Logout</a></li>
+  
+                      <li><a href="/contact" data-text="Contact">Contact</a></li>
+                      <li><a href="/dashboard" data-text="Dashboard">Dashboard</a></li>
+  
+                  </ul>
+                  
+              </div>
+          </div>
+          <li class="nav-item ticker">
+              <div class="ticker-wrap">
+                  
+               
+                  <div class="ticker-item ticker-box" id="weatherValue"></div>
+              </div>
+          </li>
+          <!-- Toggle Button -->
+          <span class="menuicon" id="toggle" onclick="menuToggle()"></span>
+      </nav>
+    <div style="padding: 20px; margin-top: 50px;"></div>
+    <center>
+    <h1>{{forum.title}}</h1>
+    <h4>Asked by <span style="color:cornflowerblue;">{{ username }}</span> On <span style="color:cornflowerblue;">{{ forum.date }}</span></h4>
+    <p>{{forum.desc}}</p>
+    <form method="POST">
+      <input name="comment" type="text" placeholder="Leave a Comment" autocomplete="off" style="width: 35% height: 25px; text-size: 15px;">
+      <input type="submit">
+    </form>
+    {% for comment in forum.comments %}
+    <p>{{ comment.content }} - Posted by <span style="color: cornflowerblue;">{{ comment.user.username }}</span></p>
+    {% endfor %}
+    </center>
+  </body>
+  
+</html>

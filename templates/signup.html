@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>FitTrack - The Comprehensive Health Management Solution</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="loading-screen" style="display:flex; align-items:center; justify-content:center; position:fixed; width:100%; height:100vh; z-index:9999; background-color:#1c1c1c;">
+        <img src="/static/images/test1.png" alt="FitTrack" height="500" class="header-img">    </div>
+    <div class="container mt-4">
+       
+        <div class="container mt-4">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-dark rounded">
+                <a class="navbar-brand" href="#">FitTrack</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="collapse navbar-collapse" id="navbarNav">
+    
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                  
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login_page') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Social</a>
+                    </li>
+                </ul>
+            </div>
+      
+            </nav>
+
+        <header class="text-center animate-fadeIn">
+            <main>
+                <section class="feature-section animate-fadeIn">
+                    
+                    {% if error_message %}
+                    <div class="alert alert-danger" id="error-alert" style="z-index:999;">{{ error_message }}</div>
+                    {% endif %}
+                    <script>
+                        // Get the alert box element
+                        var alertBox = document.getElementById("error-alert");
+                
+                        // Show the alert box
+                        alertBox.style.display = "block";
+                
+                        // Hide the alert box after 4 seconds
+                        setTimeout(function() {
+                          alertBox.style.display = "none";
+                        }, 4000);
+                      </script>
+                    <form action="/signup" method="post">
+                        <header>
+                            <img src="/static/images/fittrack.jpg" alt="FitTrack" height="150"
+                                class="header-img2">
+
+                        </header>
+                        <label for="username">Username:</label><br>
+                        <input class="cta-btn" type="text" id="username" name="username" minlength="8" maxlength="16" required><br><br>
+                        <label for="password">Password:</label><br>
+                        <input class="cta-btn" type="password" id="password" name="password" minlength="8" maxlength="16" required><br><br>
+                        <label for="email">Email:</label><br>
+                        <input class="cta-btn" type="email" id="email" name="email" required><br><br>
+                        <input class="cta-btn" type="submit" value="Sign Up">
+                    </form>
+                </section>
+            </main>
+        </header>
+    </div>
+    <script>
+        // Check if an element is in the viewport
+        function isInViewport(element) {
+            var rect = element.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+        window.onbeforeunload = function () {
+            window.scrollTo(0, 0);
+        }
+        
+        // Function to handle scrolling and showing images
+        function handleScroll() {
+            var images = document.querySelectorAll('.scroll-image');
+            images.forEach(function (image) {
+                if (isInViewport(image)) {
+                    image.classList.add('show');
+                }
+            });
+        }
+
+        // Attach scroll event listener
+        window.addEventListener('scroll', handleScroll);
+    </script>
+    <script>
+        window.addEventListener('load', function() {
+            var loadingScreen = document.getElementById('loading-screen');
+            setTimeout(function() {
+                loadingScreen.style.display = 'none';
+            }, 3000);
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0v8FqFjcJ6pajs/rN4l1e3e57FEX+0216n6RAM48GIaO5r5A" crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  <!-- Polyfill for older browsers -->
+   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  <!-- Polyfill for older browsers -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"
+        integrity="sha384-+v4yJ2Jt7KJ6cZv3zJ1J2b8J8JvzK4z5QJ9sJ5z5fZJ1zqQ1f9zJQJ9zJQJ9zJQJ"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

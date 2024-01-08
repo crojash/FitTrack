@@ -1,0 +1,247 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600;700&display=swap');
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+ 
+    min-height: 100vh;
+  
+}
+
+.fullPageMenu {
+    position: fixed;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #111;
+    transition: 0.5s;
+}
+
+.fullPageMenu.active {
+    top: 0;
+}
+
+.fullPageMenu .banner {
+    position: relative;
+    width: 600px;
+    height: 100%;
+}
+
+.fullPageMenu .banner img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.fullPageMenu .nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    background-image: url('/static/images/backround.png');
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: cover;
+    border-left: 10px solid #0a0a0a; /* Add a border to the left side */
+    border-right: 10px solid #050505; /* Add a border to the right side */
+}
+
+.fullPageMenu .nav ul {
+    position: relative;
+}
+
+.fullPageMenu .nav ul li {
+    position: relative;
+    list-style: none;
+    padding: 0 20px;
+    margin: 5px 0;
+    overflow: hidden;
+    display: table;
+    border-bottom: 10px solid #0a0a0a; /* Add a border to the bottom */
+
+}
+
+.fullPageMenu .nav ul li:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ff0047;
+    transition: transform 0.5s ease-in-out;
+    transform: scaleY(0);
+    transform-origin: bottom;
+}
+
+.fullPageMenu .nav ul li:hover:before {
+    transition: transform 0.5s ease-in-out;
+    transform: scaleY(1);
+    transform-origin: top;
+}
+
+.fullPageMenu .nav ul li a {
+    position: relative;
+    background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-decoration: none;
+    font-size: 4em;
+    font-weight: 700;
+    line-height: 1em;
+    display: inline-block;
+    text-transform: uppercase;
+    transition: 0.5s ease-in-out;
+}
+
+.fullPageMenu .nav ul li a::before {
+    content: attr(data-text);
+    position: absolute;
+    bottom: -100%;
+    left: 0;
+    color: #fff;
+}
+
+.fullPageMenu .nav ul li a:hover {
+    background: linear-gradient(90deg, rgba(12,255,255,1) 0%, rgba(255,70,200,1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.menuicon {
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    width: 40px; /* Reduce width */
+    height: 40px; /* Reduce height */
+    bottom: 20px;
+    background: #343a40 url(https://i.postimg.cc/25t1dMY5/pngegg-1.png);
+    background-size: 25px; /* Reduce background size */
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: 5px; /* Adjust background position */
+    animation: drawCircle 2s ease-out forwards; /* Apply the animation */
+
+}
+
+
+.menuicon.active {
+    background: #343a40 url(https://i.postimg.cc/25t1dMY5/pngegg-1.png);
+    background-size: 30px; /* Reduce background size */
+    background-repeat: no-repeat;
+    background-position: 5px; /* Adjust background position */
+}
+.menuicon::before {
+    content: "→"; /* Arrow character */
+    position: absolute;
+    font-size: 65px; /* Adjust the size of the arrow */
+    right: 50px; /* Position it to the left of the menuicon */
+    top: 50%;
+    transform: translateY(-50%);
+    animation: arrowBounce 0.8s infinite; /* Apply the animation */
+    color: #ff0000; /* Color of the arrow */
+    opacity: 0.8; /* Making the arrow slightly translucent */
+    background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@keyframes arrowBounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(-50%);
+    }
+    40% {
+        transform: translateY(-60%);
+    }
+    60% {
+        transform: translateY(-40%);
+    }
+}
+@keyframes drawCircle {
+    0% {
+        stroke-dasharray: 0 150;
+    }
+    100% {
+        stroke-dasharray: 150 150;
+    }
+}
+
+.menuicon::after {
+    content: "Open Menu";
+    display: none;
+    position: absolute;
+    bottom: -30px; /* Position it below the icon */
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 10px;
+    background-color: #343a40;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 12px; /* Adjust the font size of the tooltip */
+    white-space: nowrap; /* Prevent wrapping */
+    pointer-events: none; /* Make sure the tooltip doesn't interfere with clicks */
+}
+
+.menuicon:hover::after {
+    display: block;
+}
+
+@media(max-width:991px) {
+    .banner {
+        display: none;
+    }
+}
+
+.menuicon.active::before {
+    display: none; /* Hide the "Click me!" when the menu icon is active */
+}
+/* Circle drawing animation */
+@keyframes drawCircle {
+    0% {
+        stroke-dasharray: 0 150;
+    }
+    100% {
+        stroke-dasharray: 150 150;
+    }
+}
+
+.navbar-toggler {
+    /* Add a border to create the circle effect */
+    border: 2px solid transparent;
+    border-radius: 50%;
+    background-image: radial-gradient(circle, transparent 75%, #fff 76%);
+    background-origin: border-box;
+    animation: drawCircle 2s forwards;
+}
+
+.tooltip {
+    content: "Click me";
+    position: absolute;
+    right: 70px; /* Adjust as needed */
+    top: 50%;
+    transform: translateY(-50%);
+    background: #343a40;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.navbar-toggler.active .tooltip {
+    display: none;
+}

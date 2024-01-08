@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- just some general stuff -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Forum</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/x-icon" href="static/logo.png">
+  </head>
+  <body> <!-- page body goes here -->
+    <nav class="navbar navbar-light bg-light">
+      <a class="logo" href="/">
+        <img src="static/logo.png" alt="logo" height="45" width="45"/>
+        <h1>Flask Forum</h1>
+      </a>
+      <a class="profile" href="/profile">
+        <img src="static/profile.png" title="account" alt="profile" height="50" width="50"/>
+      </a>
+      <ul>
+        <li><a href="/forum">Forum</a></li>
+        <li><a href="/rules">Rules</a></li>
+      </ul>
+    </nav>
+    <div style="padding: 20px; margin-top: 50px;"></div>
+    <center>
+    <h1>{{forum.title}}</h1>
+    <h4>Asked by <span style="color:cornflowerblue;">{{forum.op}}</span> On <span style="color:cornflowerblue;">{{forum.date}}</span></h4>
+    <p>{{forum.desc}}</p>
+    <form method="POST">
+      <input name="comment" type="text" placeholder="Leave a Comment" autocomplete="off" style="width: 35% height: 25px; text-size: 15px;">
+      <input type="submit">
+    </form>
+    {% for comment in forum.comments %}
+    <p>{{comment.content}} - {{comment.user}}</p>
+    {% endfor %}
+    </center>
+  </body>
+  
+</html>

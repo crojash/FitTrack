@@ -1,0 +1,37 @@
+/* Style for the container */
+.logged-exercises-container {
+    background-color: #1b1b1b;
+    border: 1px solid #28a745; /* Border color */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Padding inside the container */
+    margin-top: 20px; /* Top margin for separation */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle lift */
+}
+
+/* Style for the logged exercises list */
+.exercise-list {
+    max-height: 300px; /* Maximum height for scrolling if the list is too long */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* Style for each logged exercise item */
+.list-group-item {
+    background-color: #525050;
+    border: none; /* Remove default item border */
+    border-radius: 4px; /* Rounded corners for each item */
+    margin-bottom: 20px; /* Bottom margin for separation */
+    padding: 15px;
+    text-align: center; 
+    text-transform: capitalize;
+}
+
+.exercise-banner{
+    justify-content: center;
+}
+
+/* Style for Duration, Sets, Reps */
+.exercise-details {
+    font-size: 14px; /* Adjust font size for details */
+    color: #c3c4c5; 
+    margin-top: 5px;
+}

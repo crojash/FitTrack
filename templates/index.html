@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>FitTrack - The Comprehensive Health Management Solution</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/styles.css">
+    <link rel="stylesheet" type="text/css" href="/static/navbarstyles.css">
+    <link rel="stylesheet" type="text/css" href="/static/custom.css">
+    <link rel="stylesheet" type="text/css" href="/static/startexperience.css">
+
+    <link rel="stylesheet" type="text/css" href="/static/footers.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+</head>
+
+<style>
+
+     /* Common styles for input and select elements */
+     input[type="text"], input[type="range"], select {
+        background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        color: transparent;
+        text-shadow: 2px 2px 4px rgba(6,127,127,0.5);
+        animation: gradientAnimation 3s infinite, fireFlicker 1s infinite;
+        border: 2px solid rgba(6,127,127,1);
+        padding: 5px;
+    }
+    input[type="text"]::placeholder, select option {
+        color: white;
+        -webkit-text-fill-color: white;
+        pointer-events: none;
+    }
+    
+    /* Styles for submit button */
+    input[type="submit"] {
+        background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        text-shadow: 2px 2px 4px rgba(6,127,127,0.5);
+        animation: gradientAnimation 3s infinite, fireFlicker 1s infinite;
+    }
+    
+    input[type="submit"]:hover {
+        background-position: 0% 100%;
+    }
+
+    /* Fire flicker animation for text elements */
+    .fire-flicker {
+        animation: fireFlicker 1s infinite;
+    }
+
+    /* Gradient text for various sections */
+    .gradient-text {
+        background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+    /* Text shadow for specific sections */
+    .text-shadow {
+        text-shadow: 2px 2px 4px rgba(6,127,127,0.5);
+    }
+</style>
+<body>
+    <div id="loading-screen"
+    style="display:flex; align-items:center; justify-content:center; position:fixed; width:100%; height:100vh; z-index:9999; background-color:#1c1c1c;">
+    <img src="/static/images/test1.png" alt="FitTrack" height="500" class="header-img">
+</div>
+        
+    <div class="container mt-4">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark rounded">
+            <a class="navbar-brand" href="#" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">FitTrack</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Full Page Menu -->
+            <div class="fullPageMenu" id="nav">
+                <div class="banner">
+                    <img src="/static/images/test1.png" alt="image">
+                </div>
+                <div class="nav">
+                    <ul>
+                        <li><a href="/" data-text="Home">Home</a></li>
+                        <li><a href="/login" data-text="Login">Login</a></li>
+                        <li><a href="/logout" data-text="Logout">Logout</a></li>
+
+                        <li><a href="/contact" data-text="Contact">Contact</a></li>
+                        <li><a href="/dashboard" data-text="Dashboard">Dashboard</a></li>
+
+                    </ul>
+                </div>
+            </div>
+            <!-- Toggle Button -->
+            <span class="menuicon" id="toggle" onclick="menuToggle()"></span>
+        </nav>
+
+    <!-- Main Content -->
+<!-- Header -->
+<script>
+    function menuToggle() {
+        var nav = document.getElementById("nav");
+        var toggle = document.getElementById("toggle");
+        
+        // Toggle the menu
+        nav.classList.toggle("active");
+        toggle.classList.toggle("active");
+    }
+    
+    // Call the function when the DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
+        setActiveMenuItem();
+    });
+</script>
+<header class="text-center animate-fadeIn">
+    <img src="/static/images/test1.png" alt="FitTrack" height="250" class="header-img">
+</header>
+
+<div style="text-align: center;">
+    <button id="startExperience" class="ghost start-experience-btn" onclick="playMusic()">
+        Start Experience
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+</div>
+<script>
+    
+   
+    function playMusic() {
+        // Add strobe effect to the entire screen
+        document.body.style.animation = 'strobe-effect 0.5s alternate infinite';
+    
+        var audio = document.getElementById('sandstorm');
+        audio.play();
+    
+        // Remove the strobe effect after 10 seconds (10000 milliseconds)
+        setTimeout(function () {
+            document.body.style.animation = 'none';
+        }, 25000);
+    }
+    
+    </script>
+    <script>
+    // JavaScript to add the strobe effect class to the button
+    document.addEventListener('DOMContentLoaded', function () {
+        var startExperienceBtn = document.getElementById('startExperience');
+        startExperienceBtn.addEventListener('click', function () {
+            startExperienceBtn.classList.add('strobe'); // Apply the strobe effect
+            setTimeout(function () {
+                startExperienceBtn.classList.remove('strobe'); // Remove the strobe effect after 25 seconds
+            }, 25000); // 25 seconds
+        });
+    });
+</script>
+<style>
+    /* Add the CSS class for the strobe effect here */
+    .strobe {
+        animation: strobe-effect 0.5s alternate infinite;
+    }
+
+    /* Define the strobe effect animation */
+    @keyframes strobe-effect {
+        0% {
+            background: linear-gradient(90deg, rgba(6, 127, 127, 1) 0%, rgba(212, 35, 143, 1) 100%);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        100% {
+            background: none;
+            color: white;
+        }
+    }
+    
+</style>
+<div style="display: flex; justify-content: center; align-items: center; height: 20vh;">
+    <h2 id="fitness-revolution">
+        <span>🅹</span><span>🅾</span><span>🅸</span><span>🅽</span>
+        <span>🆃</span><span>🅷</span><span>🅴</span>
+        <span>🅵</span><span>🅸</span><span>🆃</span><span>🅽</span><span>🅴</span><span>🆂</span><span>🆂</span>
+        <span>🆁</span><span>🅴</span><span>🆅</span><span>🅾</span><span>🅻</span><span>🆄</span><span>🆃</span><span>🅸</span><span>🅾</span><span>🅽</span>
+    </h2>
+</div>
+<section class="ghost animated-link" style="background-color: transparent; padding: 20px;">
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const letters = document.querySelectorAll('#fitness-revolution span');
+        let delay = 0;
+        letters.forEach(letter => {
+            letter.style.animation = `fall 0.5s ease ${delay}s 1 forwards`;
+            delay += 0.1;
+        });
+    });
+</script>
+<style>
+    .custom-btn {
+        background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+        -webkit-background-clip: text;
+        color: transparent;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.3s ease;
+    }
+    
+    .custom-btn:hover {
+        background: #28a745; /* Change to green color when hovering */
+    }
+    
+    @keyframes fall {
+        0% { 
+            transform: translateY(-100%); 
+            opacity: 0; 
+            background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(6,127,127,1) 50%, rgba(212,35,143,1) 50%, rgba(212,35,143,1) 100%);
+            -webkit-background-clip: text; 
+            color: transparent;
+        }
+        100% { 
+            transform: translateY(0); 
+            opacity: 1; 
+            background: none; 
+            color: white; 
+        }
+    }
+    
+    #fitness-revolution span {
+        display: inline-block;
+        animation-fill-mode: forwards;
+    }
+    .gradient-text {
+        background: linear-gradient(90deg, rgba(6, 127, 127, 1) 0%, rgba(212, 35, 143, 1) 100%);
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+    
+</style>
+  <!-- Lady Image Section -->
+  <section class="arnold-section text-center mt-5 animate-fadeIn">
+   
+    <div style="display: flex; justify-content: center;">
+        <img id="logo" src="/static/images/Fittracker.png" alt="Saud Logo" height="300"  class="scroll-image fit-image2">
+    </div>
+
+    <img src="https://cdn.sanity.io/images/dm4o0ui7/production/ab8622774dfd8bc6b2107656cc1d648ff48279b3-1200x600.png?w=900&h=450&auto=format"
+         alt="Arnold Schwarzenegger" class="scroll-image fit-image">
+</section>
+<section class="lady-section text-center mt-5 animate-fadeIn">
+    <img src="https://www.mindpumpmedia.com/hubfs/Exercise%20for%20more%20than%20just%20aesthetics.png"
+         alt="Fitness Lady" class="scroll-image fit-image">
+  </section>
+
+     
+        <section class="fitness-tips text-center mt-5 animate-fadeIn ghost animated-link ">
+            <h2 style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; border-bottom: 1px solid gray;">Unlock Your Full Potential</h2>
+
+            
+               <!-- Features Section -->
+               <section class="newsletter-social text-center mt-5 animate-fadeIn">
+                <h2 style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;">Track and Improve Your Health</h2>
+                <p style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;">Monitor daily metrics such as steps, calories, sleep, and exercise.</p>
+            </section>
+   
+               <!-- Info Section -->
+        <section class="info-section mt-5 animate-fadeIn">
+            <div class="card">
+                <div class="card-body">
+                    <h3 style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;">  Features</h3>
+                    <ul style="list-style: none;"> <!-- Remove bullet points -->
+                        <li style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;"><i class="fas fa-walking"></i> Real-time tracking</li>
+                        <li style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;"><i class="fas fa-comments"></i> Interactive fitness forum</li>
+                        <li style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;"><i class="fas fa-clipboard-list"></i> Customized routines & diet plans</li>
+                        <li style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;"><i class="fas fa-video"></i> Exercise catalog with videos</li>
+                    </ul>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section class="newsletter-social text-center mt-5 animate-fadeIn">
+            <h2 style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">Fitness Tips</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <i class="fas fa-tint fitness-icon" style="color: transparent; background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text;"></i>
+                    <p style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;">Stay hydrated throughout the day.</p>
+                </div>
+                <div class="col-md-4">
+                    <i class="fas fa-apple-alt fitness-icon" style="color: transparent; background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text;"></i>
+                    <p style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;">Eat a balanced diet rich in nutrients.</p>
+                </div>
+                <div class="col-md-4">
+                    <i class="fas fa-running fitness-icon" style="color: transparent; background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text;"></i>
+                    <p style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;">Get at least 30 minutes of exercise daily.</p>
+                </div>
+            </div>
+        </section>
+        
+            <!-- Why FitTrack Section -->
+            <section class="newsletter-social text-center mt-5 animate-fadeIn">
+                <h1 style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;">WHY FITTRACK?</p>
+                <p style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;">Unparalleled tracking accuracy and data analytics to optimize your fitness journey.</p>
+                <i class="fas fa-check-circle fitness-icon" style="color: transparent; background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text;"></i>
+                <i class="fas fa-chart-line fitness-icon" style="color: transparent; background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text;"></i>
+                <i class="fas fa-users fitness-icon" style="color: transparent; background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text;"></i>
+            </section>
+            
+<!-- Fitness Plans Section -->
+<section class="newsletter-social text-center mt-5 animate-fadeIn">
+    <h2 style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;">FITNESS PLANS</p>
+    <p style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;">We offer fitness plans for weight loss, muscle gain, and general health.</p>
+    <i class="fas fa-dumbbell fitness-icon" style="color: transparent; background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text;"></i>
+    <i class="fas fa-heartbeat fitness-icon" style="color: transparent; background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text;"></i>
+    <i class="fas fa-calendar-check fitness-icon" style="color: transparent; background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text;"></i>
+</section>
+<!-- Testimonials Section -->
+<section class="newsletter-social text-center mt-5 animate-fadeIn">
+    <h2 style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;">TESTIMONIALS</h2></p>
+        <p style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;">What our users say about FitTrack.</p>
+    <div style="border: 2px solid rgba(6,127,127,1); padding: 15px;">
+        <i class="fas fa-quote-left fitness-icon" style="color: transparent; background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text;"></i>
+
+        <p style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;">"Best tracking app out there. Period."</p>
+        <p style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;">- John Doe</p>
+        <i class="fas fa-quote-left fitness-icon" style="color: transparent; background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text;"></i>
+        <p style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;">"Finally, an app that understands my needs."</p>
+        <p style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;">- Jane Doe</p>
+    </div>
+    
+</section>
+
+<section class="newsletter-social text-center mt-5 animate-fadeIn">
+    <h2 style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">Stay Updated</h2>
+    <p style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: bold;">Subscribe to our newsletter for the latest tips and offers.</p>
+    <form>
+        <input type="email" placeholder="Email" required>
+        <button type="submit" class="cta-btn custom-btn">Subscribe</button>
+    </form>
+    <div class="social-icons mt-3">
+        <i class="fab fa-facebook-f" style="color: transparent; background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text;"></i>
+        <i class="fab fa-twitter" style="color: transparent; background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text;"></i>
+        <i class="fab fa-instagram" style="color: transparent; background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text;"></i>
+    </div>
+</section>
+<!-- Unique Footer -->
+<footer class="text-center mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <h3 style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">About Us</h3>
+            <p style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;">We strive to help you reach your fitness goals.</p>
+        </div>
+        <div class="col-md-4">
+            <h3 style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">Contact</h3>
+            <p style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;">Email: info@fittrack.com</p>
+            <p style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;">Phone: +1 800 123 456</p>
+        </div>
+        <div class="col-md-4">
+            <h3 style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">Quick Links</h3>
+            <ul>
+                <li><a href="#" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;">Privacy Policy</a></li>
+                <li><a href="#" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent;">Terms of Use</a></li>
+            </ul>
+        </div>
+    </div>
+    <p class="mb-0 mt-4" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">FitTrack &copy; 2023</p>
+</footer>
+        </section>
+        
+
+
+
+</section>
+
+        <!-- Footer -->
+ <!-- Unique Footer -->
+
+    </div>
+
+    <!-- Scripts -->
+   <!-- Scripts -->
+   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script>
+$(window).on('load', function(){
+   $('#loading-screen').fadeOut('slow');
+});
+</script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+   <script>
+        // Check if an element is in the viewport
+        function isInViewport(element) {
+            var rect = element.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+        window.onbeforeunload = function () {
+            window.scrollTo(0, 0);
+        }
+        
+        // Function to handle scrolling and showing images
+        function handleScroll() {
+            var images = document.querySelectorAll('.scroll-image');
+            images.forEach(function (image) {
+                if (isInViewport(image)) {
+                    image.classList.add('show');
+                }
+            });
+        }
+
+        // Attach scroll event listener
+        window.addEventListener('scroll', handleScroll);
+    </script>
+
+    <script>
+        window.addEventListener('load', function() {
+            var loadingScreen = document.getElementById('loading-screen');
+            setTimeout(function() {
+                loadingScreen.style.display = 'none';
+            }, 5000);
+        });
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        var loadingScreen = $('#loading-screen');
+        setTimeout(function() {
+            loadingScreen.hide();
+        }, 4000);
+    });
+    </script>
+     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var startExperienceBtn = document.getElementById('startExperience');
+            
+            setTimeout(function() {
+                startExperienceBtn.remove();  // This will remove the button from the DOM completely
+            }, 8000); // 4 seconds delay
+        });
+        
+     </script>
+{% if message %}
+<div class="alert">{{ message }}<button onclick="this.parentElement.style.display='none'">OK</button></div>
+<script>
+    setTimeout(function() {
+        $('.alert').fadeOut('slow');
+    }, 5000);
+</script>
+{% endif %}
+<audio id="sandstorm" preload="auto">
+    <source src="/static/songs/andrew.mp3" type="audio/mpeg">
+    Your browser does not support the audio tag.
+</audio>
+</body>
+
+</html>

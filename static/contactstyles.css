@@ -1,0 +1,67 @@
+body {
+    background-color: #1c1c1c;
+    color: #fff;
+    padding: 0;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Header and footer styles */
+header, footer {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    padding: 40px;
+    text-align: center;
+}
+
+/* Heading styles */
+h1, h2, h3 {
+    font-family: 'Work Sans', sans-serif;
+}
+
+/* Image styles */
+.header-img {
+    border: 5px solid #28a745;
+    border-radius: 50%;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* New contact-button styles */
+.contact-button {
+    position: relative;
+    display: inline-block;
+    padding: 15px 30px;
+    color: #2196f3;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-decoration: none;
+    font-size: 24px;
+    overflow: hidden;
+    transition: 0.2s;
+}
+
+.contact-button:hover {
+    color: #255784;
+    background: #2196f3;
+    box-shadow: 0 0 10px #2196f3, 0 0 40px #2196f3, 0 0 80px #2196f3;
+    transition-delay: 1s;
+}
+
+.contact-button span {
+    position: absolute;
+    display: block;
+}
+
+.contact-button span:nth-child(1),
+.contact-button span:nth-child(2),
+.contact-button span:nth-child(3),
+.contact-button span:nth-child(4) {
+    /* ...existing properties, replace 'a' with '.contact-button' ... */
+}
+
+.contact-button:hover span:nth-child(1),
+.contact-button:hover span:nth-child(2),
+.contact-button:hover span:nth-child(3),
+.contact-button:hover span:nth-child(4) {
+    /* ...existing properties, replace 'a' with '.contact-button' ... */
+}

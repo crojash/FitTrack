@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- just some general stuff -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Forum</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/x-icon" href="static/logo.png">
+  </head>
+  <body> <!-- page body goes here -->
+    <nav class="navbar navbar-light bg-light">
+      <a class="logo" href="/">
+        <img src="static/logo.png" alt="logo" height="45" width="45"/>
+        <h1>Flask Forum</h1>
+      </a>
+      <a class="profile" href="/profile">
+        <img src="static/profile.png" title="account" alt="profile" height="50" width="50"/>
+      </a>
+      <ul>
+        <li><a href="/forum">Forum</a></li>
+        <li><a href="/rules">Rules</a></li>
+      </ul>
+    </nav>
+    <div style="padding: 20px; margin-top: 50px;"></div>
+    <center>
+    <br>
+    <div>
+    <form method="POST" name="create"><h1 style="display: inline;">Forums</h1><input type="image" name="create" src="static/create.png" border="0" alt="create" style="position: relative; display: inline; margin-left: 10px; margin-bottom: -5px; width: 30px; height: 30px;"><input type='hidden' id='userInput' name='create' value='create forum'></form>
+    </div>
+    <h4>Ask. Answer. Learn.</h4>
+    <br>
+    <form method="POST">
+      <input name="search" type="text" placeholder="Search for a forum" autocomplete="off">
+      <input type="submit">
+    </form>
+    <br><br>
+    <div class="forumblob">
+    {% for forum, data in forums.items() %}
+      <a href="/forum?forum={{forum}}">{{data.title}}<br><span>{{data.date}} - {{data.op}}</span></a>
+      <br>
+    {% endfor %}
+    </div>
+    <br>
+    </center>
+  </body>
+  
+</html>

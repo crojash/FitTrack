@@ -1,0 +1,146 @@
+/* SIDEBAR */
+.sidebar {
+   
+    height: 100vh;
+    left: -305px; /* This will hide the sidebar by default */
+
+    transition: 0.5s; /* Add a transition for smooth sliding */
+    position: fixed;  /* Ensure the sidebar is fixed on the page */
+
+}
+
+.user-info {
+    font-size: 18px;
+    color: white;
+    margin-top: 10px; /* Add some top margin to the user name */
+    text-transform: capitalize; /* Capitalize the first letter of the text */
+    display: flex; /* Center the user name horizontally */
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar header {
+    background-image: url("/static/images/test1.png");
+    background-size: cover;
+    background-position: center;
+    height: 50%;
+}
+.sidebar a {
+    display: block;
+    height: 65px;
+    width: 100%;
+    color: white;
+    line-height: 65px;
+    padding-left: 30px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #343a40;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-family: 'Open Sans', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.sidebar a.active,
+.sidebar a:hover {
+    background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+    border-left: 5px solid #007BFF;
+    color: transparent;
+    -webkit-background-clip: text;
+    text-shadow: 2px 2px 4px rgba(6,127,127,0.5);
+}
+.sidebar a i {
+    color: #007BFF;
+    font-size: 23px;
+    margin-right: 16px;
+    
+}
+
+.sidebar a span {
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+#check {
+    display: none;
+}
+#check:checked ~ .sidebar {
+    left: 0; /* This will make the sidebar visible when the checkbox is checked */
+}
+label #btn,
+label #cancel {
+    position: fixed;
+    top: 9px;
+    left: 23px;
+    cursor: pointer;
+    color: white;
+    border-radius: 5px;
+    border: 1px solid #343a40;
+    font-size: 29px;
+    background: #343a40;
+    height: 45px;
+    width: 45px;
+    text-align: center;
+    line-height: 45px;
+    transition: all 0.5s ease;
+    z-index: 1200;
+}
+
+label #cancel {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#check:checked ~ .sidebar {
+    left: 0;
+}
+
+#check:checked ~ label #btn {
+    margin-left: 305px;
+    opacity: 0;
+    visibility: hidden;
+}
+
+#check:checked ~ label #cancel {
+    margin-left: 305px;
+    opacity: 1;
+    visibility: visible;
+}
+.user-info:active {
+    text-shadow: 2px 2px 8px rgba(6,127,127,0.8);
+}
+@media (max-width: 860px) {
+    .sidebar {
+        width: 70px;
+        left: 0;
+    }
+
+    header,
+    #btn,
+    #cancel {
+        display: none;
+    }
+
+    span {
+        position: absolute;
+        margin-left: 23px;
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .sidebar a {
+        height: 60px;
+    }
+
+    .sidebar a i {
+        margin-left: -10px;
+    }
+
+    a:hover {
+        width: 200px;
+        background: inherit;
+    }
+
+    .sidebar a:hover span {
+        opacity: 1;
+        visibility: visible;
+    }
+}

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <title>FitTrack-Goals</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/styles.css">
+    <link rel="stylesheet" type="text/css" href="../static/dashboardstyles.css">
+    <link rel="stylesheet" type="text/css" href="../static/goals.css">
+    <link rel="stylesheet" type="text/css" href="../static/sidebarstyles.css">
+    <link rel="stylesheet" type="text/css" href="../static/dashboardchartscss.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core JavaScript, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"
+        integrity="sha384-eMNCOe7tC1do4A+gf8k5l7l4lMz4i3WDQn1Z7y/JonasIUNsobU+Kk8dDl3h5ef"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+Wy4Ck4SOF4y4Ck4C2DgHfViXydVeLm+JDM"
+        crossorigin="anonymous"></script>
+
+    <script src="/static/scripts/fetchchathistory.js"></script>
+    <script src="/static/scripts/calories.js"></script>
+    <script src="/static/scripts/togglechat.js"></script>
+    <script src="/static/scripts/chat.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/navbarstyles.css">
+
+</head>
+<div id="loading-screen"
+    style="display:flex; align-items:center; justify-content:center; position:fixed; width:100%; height:100vh; z-index:9999; background-color:#1c1c1c;">
+    <img src="/static/images/test1.png" alt="FitTrack" height="500" class="header-img">
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById('user-message').addEventListener('keyup', function (event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    });
+
+
+
+</script>
+<script>
+    navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        fetch('/weather', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ latitude, longitude }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('weatherValue').innerText = `Temperature: ${data.weather} , Humidity: ${data.humidity}%, Description: ${data.description}, Place: ${data.place}`;
+            })
+            .catch((error) => {
+                console.error('Error fetching weather:', error);
+            });
+    });
+
+
+</script>
+
+<style>
+
+</style>
+
+<div class="banner-section">
+</div>
+<div class="goalbanner" style="text-align: center; margin-top: 10px;">
+    <h1>Your Fitness Goals</h1>
+</div>
+<style>
+
+</style>
+<!-- Navigation Bar -->
+<div class="container mt-4">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark rounded">
+        <a class="navbar-brand" href="#"
+            style="margin-left: 48px; background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">FitTrack</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Full Page Menu -->
+        <div class="fullPageMenu" id="nav">
+            <div class="banner">
+                <img src="/static/images/test1.png" alt="image">
+            </div>
+            <div class="nav">
+                <ul>
+                    <li><a href="/" data-text="Home">Home</a></li>
+                    <li><a href="/login" data-text="Login">Login</a></li>
+                    <li><a href="/logout" data-text="Logout">Logout</a></li>
+
+                    <li><a href="/contact" data-text="Contact">Contact</a></li>
+                    <li><a href="/dashboard" data-text="Dashboard">Dashboard</a></li>
+
+                </ul>
+            </div>
+        </div>
+        <li class="nav-item ticker">
+            <div class="ticker-wrap">
+
+
+                <div class="ticker-item ticker-box" id="weatherValue"></div>
+            </div>
+        </li>
+        <!-- Toggle Button -->
+        <span class="menuicon" id="toggle" onclick="menuToggle()"></span>
+    </nav>
+    <script>
+        function menuToggle() {
+            var nav = document.getElementById("nav");
+            var toggle = document.getElementById("toggle");
+
+            // Toggle the menu
+            nav.classList.toggle("active");
+            toggle.classList.toggle("active");
+        }
+
+        // Call the function when the DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            setActiveMenuItem();
+        });
+    </script>
+    <style>
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 100% 0%;
+            }
+
+            100% {
+                background-position: 0% 100%;
+            }
+        }
+
+        @keyframes flameAnimation {
+            0% {
+                transform: translateY(0px) scale(1);
+                opacity: 0.9;
+            }
+
+            50% {
+                transform: translateY(-10px) scale(1.05);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(0px) scale(1);
+                opacity: 0.9;
+            }
+        }
+
+        @keyframes fireFlicker {
+            0% {
+                box-shadow:
+                    0 0 5px rgba(6, 127, 127, 0.8),
+                    0 5px 15px rgba(212, 35, 143, 0.8),
+                    2px 2px 10px rgba(6, 127, 127, 0.8);
+            }
+
+            33% {
+                box-shadow:
+                    0 2px 15px rgba(212, 35, 143, 0.8),
+                    -2px -2px 10px rgba(6, 127, 127, 0.8),
+                    2px -2px 10px rgba(212, 35, 143, 0.8);
+            }
+
+            66% {
+                box-shadow:
+                    -2px 0 15px rgba(6, 127, 127, 0.8),
+                    2px 2px 15px rgba(212, 35, 143, 0.8),
+                    -2px -2px 10px rgba(6, 127, 127, 0.8);
+            }
+
+            100% {
+                box-shadow:
+                    0 0 5px rgba(6, 127, 127, 0.8),
+                    0 5px 15px rgba(212, 35, 143, 0.8),
+                    2px 2px 10px rgba(6, 127, 127, 0.8);
+            }
+        }
+
+        span {
+            background: linear-gradient(90deg, rgba(6, 127, 127, 1) 0%, rgba(212, 35, 143, 1) 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(6, 127, 127, 0.5);
+            animation: gradientAnimation 3s infinite;
+            text-decoration: darkblue;
+        }
+
+        .username {
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(90deg, rgba(6, 127, 127, 1) 0%, rgba(212, 35, 143, 1) 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(6, 127, 127, 0.5);
+            animation: gradientAnimation 3s infinite, fireFlicker 1s infinite;
+            line-height: 1;
+            border: 20px solid rgba(6, 127, 127, 1);
+        }
+
+        .username::before {
+            content: attr(data-text);
+            /* This fetches the text from the data-text attribute */
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: white;
+            /* This gives the text a white fill */
+            z-index: 1;
+            /* This ensures the white text is on top of the glowing text */
+            pointer-events: none;
+            /* Ensures any interactions pass through this element to underlying elements */
+        }
+    </style>
+
+    <!-- Sidebar -->
+    <input type="checkbox" id="check">
+    <label for="check">
+        <i class="fas fa-bars" id="btn"></i>
+        <i class="fas fa-times" id="cancel"></i>
+    </label>
+    <!-- Sidebar -->
+    <input type="checkbox" id="check"
+        style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+    <label for="check">
+        <i class="fas fa-bars" id="btn"
+            style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);"></i>
+        <i class="fas fa-times" id="cancel"
+            style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);"></i>
+    </label>
+    <div class="sidebar">
+        <header>
+            <div class="user-info">
+                <span style="font-size: 25px;"><span class="username" data-text="{{ username }}">{{ username
+                        }}</span></span>
+            </div>
+        </header>
+        <a href="/dashboard"
+            style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+            <i class="fas fa-qrcode"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="/goals"
+            style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+            <i class="fa fa-bullseye"></i>
+            <span>Goals</span>
+        </a>
+        <a href="/logfood"
+            style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+            <i class="fa fa-book"></i>
+            <span>Log Food</span>
+        </a>
+        <a href="/log_exercise"
+            style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+            <i class="fa fa-heartbeat"></i>
+            <span>Exercise</span>
+        </a>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebarLinks = document.querySelectorAll('.sidebar a');
+            const currentURL = window.location.pathname;
+
+            sidebarLinks.forEach(link => {
+                if (link.getAttribute('href') === currentURL) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        });
+    </script>
+
+    <!-- Select height/weight/age/activity_level/weight_progress  -->
+    <form action="/goals" method="post" class="form">
+
+        <div class="profile-section"><section-header>Profile</section-header>
+            <div class="age-select">
+                <label for="age">Enter your age:</label>
+                <input type="age" id="age" name="age" value={{age}}>
+            </div>
+            <div class="height-select">
+                <label for="feet">Select your height: {{feet}}' {{inches}}"</label>
+                <div class="feet-height-select">
+                    <div class="block">
+                        <label for="feet-text">Feet</label>
+                        <select id="feet" name="feet">
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5" selected>5</option>
+                            <option value="6">6</option>
+                        </select>
+                    </div>
+                    <div class="block">
+                        <label for="inches-text">Inches</label>
+                        <select id="inches" name="inches">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10" selected>10</option>
+                            <option value="11">11</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="current-weight-select">
+                <label for="current-weight">Select your weight (in lbs):
+                    <span id="selected-current-weight">{{current_weight}} lbs</span>
+                </label>
+                <input type="range" id="current-weight" name="current-weight" min="75" max="300" step="1"
+                    value={{current_weight}}>
+            </div>
+            <div class="activity-level-select">
+                <label for="activity-level">Select your activity level: {{activity_level}}</span></label>
+                <br>
+                <select id="activity-level" name="activity-level">
+                    <option value=".2">Sedentary</option>
+                    <option value=".375">Lightly Active</option>
+                    <option value=".5">Moderately Active</option>
+                    <option value=".9">Very Active</option>
+                </select>
+            </div>
+        </div>
+        <br>
+        <div class="goals-section"><section-header>Goals</section-header>
+            <div class="goal-weight-select">
+                <label for="goal-weight">Select your goal weight (in lbs):
+                    <span id="selected-goal-weight">{{goal_weight}} lbs</span>
+                </label>
+                <input type="range" id="goal-weight" name="goal-weight" min="75" max="300" step="1"
+                    value={{goal_weight}}>
+            </div>
+            <div class="rate-weight-selected">
+                <label for="rate-weight">Gain/Lose weight (lb per week):
+                    <span id="selected-rate-weight">{{rate_weight}} lbs</span>
+                </label>
+                <input type="range" id="rate-weight" name="rate-weight" min="-2" max="2" step=".25"
+                    value={{rate_weight}}>
+            </div>
+            <div class="macros-selected">
+                <label for="macros">Select your desired macros:</label>
+                <div class="block">
+                    <label for="macro-type">Proteins</label>
+                    <input type="macro" id="macro-protein" name="macro-protein" value={{macro_protein}}>
+                </div>
+                <div class="block">
+                    <label for="macro-type">Carbs</label>
+                    <input type="macro" id="macro-carb" name="macro-carb" value={{macro_carb}}>
+                </div>
+                <div class="block">
+                    <label for="macro-type">Fats</label>
+                    <input type="macro" id="macro-fat" name="macro-fat" value={{macro_fat}}>
+                </div>
+            </div>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert" style="padding: 15px;">
+            {{ message }}
+
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <script>
+            $(document).ready(function () {
+                setTimeout(function () {
+                    $(".alert").remove(); // Change fadeOut to remove
+                }, 6000); // 2 seconds
+            });
+        </script>
+
+        <div class="button-container">
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+
+    <script>
+        const cweightInput = document.getElementById("current-weight");
+        const cselectedWeight = document.getElementById("selected-current-weight");
+
+        cweightInput.addEventListener("input", function () {
+            cselectedWeight.textContent = cweightInput.value + " lbs";
+        });
+    </script>
+
+    <script>
+        const gweightInput = document.getElementById("goal-weight");
+        const gselectedWeight = document.getElementById("selected-goal-weight");
+
+        gweightInput.addEventListener("input", function () {
+            gselectedWeight.textContent = gweightInput.value + " lbs";
+        });
+    </script>
+
+    <script>
+        const rweightInput = document.getElementById("rate-weight");
+        const rselectedWeight = document.getElementById("selected-rate-weight");
+
+        rweightInput.addEventListener("input", function () {
+            rselectedWeight.textContent = rweightInput.value + " lbs";
+        });
+    </script>
+
+    <div class="chat-container">
+        <div class="chat-header" id="chat-header" onclick="toggleChat()">
+            <div class="chat-header-content">
+                <img src="/static/images/fittrack.jpg" alt="FitTrack" height="45" class="chat-header-logo">
+                <h4 class="chat-header-title">FitTrack Chat</h4>
+            </div>
+            <button id="minimize-button" class="minimize-button"><i class="fas fa-window-minimize"></i></button>
+        </div>
+        <div class="chat-history" id="chat-history">
+            <!-- Chat history will be dynamically added here -->
+
+            <div class="message assistant-message">
+                <strong>FitTrack-GPT:</strong>
+                <p>Hi there! Please feel free to ask any questions.</p>
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="user-message" class="user-message-input" placeholder="Type your message...">
+            <button onclick="sendMessage()" class="send-button">Send</button>
+        </div>
+        <!-- Loading animation container -->
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+        </div>
+        <script>
+            window.addEventListener('load', function () {
+                var loadingScreen = document.getElementById('loading-screen');
+                setTimeout(function () {
+                    loadingScreen.style.display = 'none';
+                }, 1000);
+            });
+        </script>
+
+    </div>

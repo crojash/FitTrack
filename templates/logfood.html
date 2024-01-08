@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Food Logger</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link rel="stylesheet" type="text/css" href="static/dashboardstyles.css">
+    <link rel="stylesheet" type="text/css" href="static/sidebarstyles.css">
+    <link rel="stylesheet" type="text/css" href="static/bmr.css">
+    <link rel="stylesheet" type="text/css" href="static/tdee.css">
+    <link rel="stylesheet" type="text/css" href="static/dailylimit.css">
+    <link rel="stylesheet" type="text/css" href="static/dashboardchartscss.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/styles.css">
+    <link rel="stylesheet" type="text/css" href="/static/navbarstyles.css">
+    <link rel="stylesheet" type="text/css" href="/static/custom.css">
+    <link rel="stylesheet" type="text/css" href="/static/startexperience.css">
+
+    <link rel="stylesheet" type="text/css" href="/static/footers.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/scripts/fetchchathistory.js"></script>
+    <script src="/static/scripts/calories.js"></script>
+    <script src="/static/scripts/togglechat.js"></script>
+    <script src="/static/scripts/chat.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/navbarstyles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <div class="container mt-4">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark rounded">
+            <a class="navbar-brand" href="#" style="margin-left: 48px; background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">FitTrack</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Full Page Menu -->
+            <div class="fullPageMenu" id="nav">
+                <div class="banner">
+                    <img src="/static/images/test1.png" alt="image">
+                </div>
+                <div class="nav">
+                    <ul>
+                        <li><a href="/" data-text="Home">Home</a></li>
+                        <li><a href="/login" data-text="Login">Login</a></li>
+                        <li><a href="/logout" data-text="Logout">Logout</a></li>
+
+                        <li><a href="/contact" data-text="Contact">Contact</a></li>
+                        <li><a href="/dashboard" data-text="Dashboard">Dashboard</a></li>
+
+                    </ul>
+
+                </div>
+            </div>
+            <li class="nav-item ticker">
+                <div class="ticker-wrap">   
+                    <div class="ticker-item ticker-box" id="weatherValue"></div>
+                </div>
+            </li>
+            <!-- Toggle Button -->
+            <span class="menuicon" id="toggle" onclick="menuToggle()"></span>
+        </nav>
+        <script>
+            // Function to fetch and update the daily calorie limit
+            async function updateDailyCalorieLimit() {
+                try {
+                    const response = await fetch('/get_daily_calorie_limit'); // Replace with your server endpoint
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch daily calorie limit');
+                    }
+                    const data = await response.json();
+                    const dailyLimitElement = document.getElementById('dailyLimitValue');
+                    dailyLimitElement.textContent = `${data.daily_limit} calories`;
+                } catch (error) {
+                    console.error('Error updating daily calorie limit:', error);
+                }
+            }
+
+            // Call the function to update the daily calorie limit on page load
+            window.addEventListener('load', updateDailyCalorieLimit);
+        </script>
+        <script>
+            function menuToggle() {
+                var nav = document.getElementById("nav");
+                var toggle = document.getElementById("toggle");
+
+                // Toggle the menu
+                nav.classList.toggle("active");
+                toggle.classList.toggle("active");
+            }
+
+            // Call the function when the DOM is ready
+            document.addEventListener('DOMContentLoaded', () => {
+                setActiveMenuItem();
+            });
+        </script>
+        <style>
+            @keyframes gradientAnimation {
+                0% {
+                    background-position: 100% 0%;
+                }
+                100% {
+                    background-position: 0% 100%;
+                }
+            }
+            @keyframes flameAnimation {
+                0% {
+                    transform: translateY(0px) scale(1);
+                    opacity: 0.9;
+                }
+                50% {
+                    transform: translateY(-10px) scale(1.05);
+                    opacity: 0.8;
+                }
+                100% {
+                    transform: translateY(0px) scale(1);
+                    opacity: 0.9;
+                }
+            }
+            @keyframes fireFlicker {
+                0% {
+                    box-shadow: 
+                        0 0 5px rgba(6,127,127,0.8), 
+                        0 5px 15px rgba(212,35,143,0.8), 
+                        2px 2px 10px rgba(6,127,127,0.8);
+                }
+                33% {
+                    box-shadow: 
+                        0 2px 15px rgba(212,35,143,0.8), 
+                        -2px -2px 10px rgba(6,127,127,0.8), 
+                        2px -2px 10px rgba(212,35,143,0.8);
+                }
+                66% {
+                    box-shadow: 
+                        -2px 0 15px rgba(6,127,127,0.8), 
+                        2px 2px 15px rgba(212,35,143,0.8), 
+                        -2px -2px 10px rgba(6,127,127,0.8);
+                }
+                100% {
+                    box-shadow: 
+                        0 0 5px rgba(6,127,127,0.8), 
+                        0 5px 15px rgba(212,35,143,0.8), 
+                        2px 2px 10px rgba(6,127,127,0.8);
+                }
+            }
+            span {
+                background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+                background-size: 200% 200%;
+                -webkit-background-clip: text;
+                color: transparent;
+                text-shadow: 2px 2px 4px rgba(6,127,127,0.5);
+                animation: gradientAnimation 3s infinite;
+                text-decoration: darkblue;
+            }
+
+            .username {
+                position: relative;
+                display: inline-block;
+                background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+                background-size: 200% 200%;
+                -webkit-background-clip: text;
+                color: transparent;
+                text-shadow: 2px 2px 4px rgba(6,127,127,0.5);
+                animation: gradientAnimation 3s infinite, fireFlicker 1s infinite;
+                line-height: 1;
+                border: 20px solid rgba(6,127,127,1);
+            }
+            .username::before {
+                content: attr(data-text); /* This fetches the text from the data-text attribute */
+                position: absolute;
+                top: 0;
+                left: 0;
+                color: white; /* This gives the text a white fill */
+                z-index: 1; /* This ensures the white text is on top of the glowing text */
+                pointer-events: none; /* Ensures any interactions pass through this element to underlying elements */
+            }
+        </style>
+    <!-- Sidebar -->
+    <input type="checkbox" id="check" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+    <label for="check">
+        <i class="fas fa-bars" id="btn" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);"></i>
+        <i class="fas fa-times" id="cancel" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);"></i>
+    </label>
+    <div class="sidebar">
+        <header>
+            <div class="user-info">
+                <span style="font-size: 25px;"><span class="username" data-text="{{ username }}">{{ username }}</span></span>
+            </div>
+        </header>
+        <a href="/dashboard" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+            <i class="fas fa-qrcode"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="/goals" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+            <i class="fa fa-bullseye"></i>
+            <span>Goals</span>
+        </a>
+        <a href="/logfood" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+            <i class="fa fa-book"></i>
+            <span>Log Food</span>
+        </a>
+        <a href="/log_exercise" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+            <i class="fa fa-heartbeat"></i>
+            <span> Exercise</span>
+        </a>
+    </div>
+    <form id="foodForm" class="form">
+        <div class="age-select">
+            <label for="food_name">Enter the name of your food:</label>
+            <br>
+            <input type="text" size="10px" id="food_name" name="food_name">
+            <br>
+            <label for="custom_calories">Enter custom calories:</label>
+            <br>
+            <input type="number" id="custom_calories" name="custom_calories">
+            <br>
+            <div class="button-container">
+                <input type="button" value="Submit" id="submitBtn">
+            </div>
+            <div id="result">
+                <!-- The result will be displayed here -->
+            </div>
+        </div>
+    </form>
+    <script>
+        // Function to handle the user input
+        function handleUserInput() {
+            var food_name = $("#food_name").val();
+            var customCalories = $("#custom_calories").val();
+
+            if (food_name && customCalories) {
+                // Use custom input
+                var calories = Math.round(parseFloat(customCalories));
+                displayCalories(food_name, calories);
+            } else {
+                // Use API input
+                $.post("/parse_food", { food_name: food_name }, function(data){
+                    if (data && data.calories !== undefined) {
+                        var calories = Math.round(data.calories); // Round to the nearest whole number
+                        displayCalories(food_name, calories);
+                    } else {
+                        $("#result").html("<p>Unable to fetch calorie count.</p>");
+                    }
+                });
+            }
+        }
+
+        // Function to display calories
+        function displayCalories(food_name, calories) {
+            var html = `<h3>Calories for ${food_name}</h3><p>Calories: ${calories}</p>`;
+            // Ask the user if they want to log the food
+            html += `<p>Would you like to log this food to your daily calories?</p>`;
+            html += `<button id="logFoodBtn" data-food="${food_name}" data-calories="${calories}">Log Food</button>`;
+            $("#result").html(html);
+
+            // Attach a click event handler to the "Log Food" button
+            $("#logFoodBtn").click(function(){
+                var loggedFood = $(this).data("food");
+                var loggedCalories = $(this).data("calories");
+                // You can now send this information to the backend to log the food for the user
+                $.post("/logfood", { food_name: loggedFood, calorie_count: loggedCalories }, function(response){
+                    if (response && response.success) {
+                        $("#result").html(`<p>${loggedFood} (${loggedCalories} calories) logged successfully!</p>`);
+                    } else {
+                        $("#result").html(`<p>Error logging ${loggedFood} (${loggedCalories} calories).</p>`);
+                    }
+                });
+            });
+        }
+
+        $("#submitBtn").click(function(){
+            handleUserInput();
+        });
+    </script>
+</body>
+</html>

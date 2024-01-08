@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>FitTrack-Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link rel="stylesheet" type="text/css" href="static/dashboardstyles.css">
+    <link rel="stylesheet" type="text/css" href="static/sidebarstyles.css">
+    <link rel="stylesheet" type="text/css" href="static/bmr.css">
+    <link rel="stylesheet" type="text/css" href="static/tdee.css">
+    <link rel="stylesheet" type="text/css" href="static/dailylimit.css">
+    <link rel="stylesheet" type="text/css" href="static/dashboardchartscss.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/scripts/fetchchathistory.js"></script>
+    <script src="/static/scripts/calories.js"></script>
+    <script src="/static/scripts/togglechat.js"></script>
+    <script src="/static/scripts/chat.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/navbarstyles.css">
+
+
+
+</head>
+
+<body>
+    
+  
+    <div class="image-container22">
+        <img src="/static/images/DASHBOARDLOGO.png">
+    </div>
+
+    <style>
+        /* Add this style for the BMR and TDEE, and Daily Calorie Limit displays */
+        .column {
+            width: calc(33.33% - 20px);
+        }
+    </style>
+    <div class="charts-container">
+        <div class="column">
+            <div class="gym-container">
+                <div class="gym-header">  <!-- This is the flex container -->
+                    <p class="gym-label">Closest Gym:</p>
+                    <p class="gym-value" id="gymValue">Loading...</p>
+                </div>
+                <div id="gymImageContainer"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!--BMR display-->
+    <div class="charts-container">
+        <div class="column">
+            <div class="bmr-container">
+                <p class="bmr-label">Your Basal Metabolic Rate (BMR) is:</p>
+                <p class="bmr-value" id="bmrValue">{{ bmr }} calories </p>
+            </div>
+        </div>
+        <!--TDEE display-->
+        <div class="column">
+            <div class="tdee-container">
+                <p class="tdee-label">Your Total Daily Energy Expenditure (TDEE) is:</p>
+                <p class="tdee-value" id="tdeeValue">{{ tdee }} calories </p>
+            </div>
+        </div>
+        <!--Daily Calorie Limit Display-->
+        <div class="column">
+            <div class="daily_limit-container">
+                <p class="daily_limit-label">Your Daily Calorie Limit is:</p>
+                <p class="daily_limit-value" id="dailyLimitValue">{{ daily_limit }} calories</p>
+            </div>
+        </div>
+    </div>
+   
+    <div class="charts-container">
+        <div class="single-chart-container">
+            <canvas id="heartChartDataLine"></canvas>
+        </div>
+        <div class="single-chart-container">
+            <canvas id="calChartDataBar"></canvas>
+        </div>
+        <div class="single-chart-container">
+            <canvas id="stepsChartDataDoughnut"></canvas>
+        </div>
+    </div>
+
+<!-- Navigation Bar -->
+<!-- Navigation Bar -->
+<div class="container mt-4">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark rounded">
+        <a class="navbar-brand" href="#" style="margin-left: 48px; background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">FitTrack</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Full Page Menu -->
+        <div class="fullPageMenu" id="nav">
+            <div class="banner">
+                <img src="/static/images/test1.png" alt="image">
+            </div>
+            <div class="nav">
+                <ul>
+                    <li><a href="/" data-text="Home">Home</a></li>
+                    <li><a href="/login" data-text="Login">Login</a></li>
+                    <li><a href="/logout" data-text="Logout">Logout</a></li>
+
+                    <li><a href="/contact" data-text="Contact">Contact</a></li>
+                    <li><a href="/dashboard" data-text="Dashboard">Dashboard</a></li>
+                    <li><a href="/connect_fitbit" data-text="Connect Fitbit">Connect Fitbit</a></li>
+
+                </ul>
+                
+            </div>
+        </div>
+        <li class="nav-item ticker">
+            <div class="ticker-wrap">
+                
+             
+                <div class="ticker-item ticker-box" id="weatherValue"></div>
+            </div>
+        </li>
+        <!-- Toggle Button -->
+        <span class="menuicon" id="toggle" onclick="menuToggle()"></span>
+    </nav>
+    <script>
+        // Function to fetch and update the daily calorie limit
+        async function updateDailyCalorieLimit() {
+            try {
+                const response = await fetch('/get_daily_calorie_limit'); // Replace with your server endpoint
+                if (!response.ok) {
+                    throw new Error('Failed to fetch daily calorie limit');
+                }
+                const data = await response.json();
+                const dailyLimitElement = document.getElementById('dailyLimitValue');
+                dailyLimitElement.textContent = `${data.daily_limit} calories`;
+            } catch (error) {
+                console.error('Error updating daily calorie limit:', error);
+            }
+        }
+
+        // Call the function to update the daily calorie limit on page load
+        window.addEventListener('load', updateDailyCalorieLimit);
+    </script>
+
+<script>
+    // Function to fetch FitBit data asynchronously
+    async function fetchFitBitData() {
+        try {
+            const response = await fetch('/get_fitbit_data');
+            if (!response.ok) {
+                throw new Error('Failed to fetch FitBit data');
+            }
+
+            const data = await response.json();
+            console.log(data)
+
+            const chartBackgroundColor = [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)'
+            ];
+            const chartBorderColor = [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)'
+            ];
+
+            //Heart Data
+            const lineData = {
+                labels: data.heart_times,
+                datasets: [{
+                    label: 'Heart Rate',
+                    data: data.beats,
+                    backgroundColor: chartBackgroundColor,
+                    borderColor: chartBorderColor,
+                    borderWidth: 1
+                }]
+            };
+            //Calorie Data
+            const barData = {
+                labels: ['Calories Burned', 'Calories Eaten'],
+                datasets: [{
+                    label: 'Calories',
+                    data: [data.calories_burned, data.calories_eaten],
+                    backgroundColor: chartBackgroundColor,
+                    borderColor: chartBorderColor,
+                    borderWidth: 1,
+                }]
+            }
+            //Steps Data
+            const doughnutData = {
+                labels: ['Steps Remaining', 'Steps Taken'],
+                datasets: [{
+                    data: [10000 - data.steps_taken, data.steps_taken],
+                    backgroundColor: chartBackgroundColor,
+                    borderColor: chartBorderColor,
+                    borderWidth: 1
+                }]
+            };
+            //Heart Line Chart
+            const heartChartContext = document.getElementById('heartChartDataLine').getContext('2d');
+            new Chart(heartChartContext, {
+                type: 'line',
+                data: lineData,
+            });
+            //Calorie Bar Chart
+            const calChartContext = document.getElementById('calChartDataBar').getContext('2d');
+            new Chart(calChartContext, {
+                type: 'bar',
+                data: barData,
+            });
+            //Steps Doughnut Chart
+            const stepsChartContext = document.getElementById('stepsChartDataDoughnut').getContext('2d');
+            new Chart(stepsChartContext, {
+                type: 'doughnut',
+                data: doughnutData,
+            });
+
+        } catch (error) {
+            console.error('Error fetching FitBit data:', error);
+        }
+    }
+
+    // Call the fetchFitBitData function when the page loads
+    window.addEventListener('load', fetchFitBitData);
+</script>
+
+    <script>
+        
+        function menuToggle() {
+            var nav = document.getElementById("nav");
+            var toggle = document.getElementById("toggle");
+            
+            // Toggle the menu
+            nav.classList.toggle("active");
+            toggle.classList.toggle("active");
+        }
+        
+        // Call the function when the DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            setActiveMenuItem();
+        });
+    </script>
+    <style>
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 100% 0%;
+            }
+            100% {
+                background-position: 0% 100%;
+            }
+        }
+        @keyframes flameAnimation {
+            0% {
+                transform: translateY(0px) scale(1);
+                opacity: 0.9;
+            }
+            50% {
+                transform: translateY(-10px) scale(1.05);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(0px) scale(1);
+                opacity: 0.9;
+            }
+        }
+        @keyframes fireFlicker {
+            0% {
+                box-shadow: 
+                    0 0 5px rgba(6,127,127,0.8), 
+                    0 5px 15px rgba(212,35,143,0.8), 
+                    2px 2px 10px rgba(6,127,127,0.8);
+            }
+            33% {
+                box-shadow: 
+                    0 2px 15px rgba(212,35,143,0.8), 
+                    -2px -2px 10px rgba(6,127,127,0.8), 
+                    2px -2px 10px rgba(212,35,143,0.8);
+            }
+            66% {
+                box-shadow: 
+                    -2px 0 15px rgba(6,127,127,0.8), 
+                    2px 2px 15px rgba(212,35,143,0.8), 
+                    -2px -2px 10px rgba(6,127,127,0.8);
+            }
+            100% {
+                box-shadow: 
+                    0 0 5px rgba(6,127,127,0.8), 
+                    0 5px 15px rgba(212,35,143,0.8), 
+                    2px 2px 10px rgba(6,127,127,0.8);
+            }
+        }
+        span {
+            background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(6,127,127,0.5);
+            animation: gradientAnimation 3s infinite;
+            text-decoration: darkblue;
+        }
+        
+        .username {
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(6,127,127,0.5);
+            animation: gradientAnimation 3s infinite, fireFlicker 1s infinite;
+            line-height: 1;
+            border: 20px solid rgba(6,127,127,1);
+        }
+        .username::before {
+            content: attr(data-text); /* This fetches the text from the data-text attribute */
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: white; /* This gives the text a white fill */
+            z-index: 1; /* This ensures the white text is on top of the glowing text */
+            pointer-events: none; /* Ensures any interactions pass through this element to underlying elements */
+        }
+        </style>
+  <!-- Sidebar -->
+<input type="checkbox" id="check" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+<label for="check">
+    <i class="fas fa-bars" id="btn" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);"></i>
+    <i class="fas fa-times" id="cancel" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);"></i>
+</label>
+<div class="sidebar">
+    <header>
+        <div class="user-info">
+            <span style="font-size: 25px;"><span class="username" data-text="{{ username }}">{{ username }}</span></span>
+        </div>
+    </header>
+    <a href="/dashboard" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+        <i class="fas fa-qrcode"></i>
+        <span>Dashboard</span>
+    </a>
+    <a href="/goals" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+        <i class="fa fa-bullseye"></i>
+        <span>Goals</span>
+    </a>
+    <a href="/logfood" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+        <i class="fa fa-book"></i>
+        <span>Log Food</span>
+    </a>
+    <a href="/log_exercise" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+        <i class="fa fa-heartbeat"></i>
+        <span> Exercise</span>
+    </a>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebarLinks = document.querySelectorAll('.sidebar a');
+        const currentURL = window.location.pathname;
+    
+        sidebarLinks.forEach(link => {
+            if (link.getAttribute('href') === currentURL) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    });
+    </script>
+    <style>
+        
+        input[type="text"], input[type="range"], select {
+            background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(6,127,127,0.5);
+            animation: gradientAnimation 3s infinite, fireFlicker 1s infinite;
+            border: 2px solid rgba(6,127,127,1);
+            padding: 5px;
+        }
+        input[type="text"]::placeholder, select option {
+          color: white;
+          -webkit-text-fill-color: white;
+          pointer-events: none;
+        }
+        
+        input[type="submit"] {
+          background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+          text-shadow: 2px 2px 4px rgba(6,127,127,0.5);
+          animation: gradientAnimation 3s infinite, fireFlicker 1s infinite;
+        }
+        
+        input[type="submit"]:hover {
+          background-position: 0% 100%;
+        }
+    </style>
+
+    <!-- If user has not submitted any info on the goals page, display this error message. -->
+    {% if error_message %}
+    <div class="alert alert-danger" id="error-alert" style="z-index:999;">
+        <p>{{error_message}}</p>
+        <button id="ok-button">OK</button>
+    </div>
+    {% endif %}
+
+    <script>
+        // Get the alert box element and OK button
+        var alertBox = document.getElementById("error-alert");
+        var okButton = document.getElementById("ok-button");
+
+        // Show the alert box
+        alertBox.style.display = "block";
+
+        // Attach a click event to the OK button
+        okButton.addEventListener("click", function () {
+            alertBox.style.display = "none"; // Hide the alert box when OK is clicked
+            window.location.href = "/goals"; // Redirect user to the goals page after OK is clicked
+        });
+    </script>
+
+    <div class="chat-container">
+        <div class="chat-header" id="chat-header" onclick="toggleChat()">
+            <div class="chat-header-content">
+                <img src="/static/images/fittrack.jpg" alt="FitTrack" height="45" class="chat-header-logo">
+                <h4 class="chat-header-title">FitTrack Chat</h4>
+            </div>
+            <button id="minimize-button" class="minimize-button =ghost animated-link"><i class="fas fa-window-minimize"></i></button>
+        </div>
+        <div class="chat-history" id="chat-history">
+            <!-- Chat history will be dynamically added here -->
+            <div class="message assistant-message">
+                <strong>FitTrack-GPT:</strong>
+                <p>Hi there! Please feel free to ask any questions.</p>
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="user-message" class="user-message-input" placeholder="Type your message...">
+            <button onclick="sendMessage()" class="send-button">Send</button>
+        </div>
+        <!-- Loading animation container -->
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+  
+
+    <script>
+        document.getElementById('user-message').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+    <script>
+        navigator.geolocation.getCurrentPosition((position) => {
+            const { latitude, longitude } = position.coords;
+            fetch('/weather', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ latitude, longitude }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('weatherValue').innerText = `Temperature: ${data.weather} , Humidity: ${data.humidity}%, Description: ${data.description}, Place: ${data.place}`;
+            })
+            .catch((error) => {
+                console.error('Error fetching weather:', error);
+            });
+        });
+        
+        
+    </script>
+    
+    <script>
+        let isGymInfoFetched = false;
+    
+        async function sendCoordinatesToServer(lat, lon) {
+            if (isGymInfoFetched) return;
+    
+            try {
+                const response = await fetch('/get_nearest_gym', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({latitude: lat, longitude: lon})
+                });
+    
+                if (!response.ok) throw new Error('Network response was not OK');
+    
+                const data = await response.json();
+                isGymInfoFetched = true;
+    
+                const gymName = data.gymName;
+                const photoUrl = data.photoUrl;
+    
+                document.getElementById('gymValue').innerText = gymName;
+    
+                let gymImage = document.createElement('img');
+                gymImage.src = photoUrl;
+                gymImage.width = 200;
+                gymImage.height = 200;
+                gymImage.onclick = function() {
+                    window.open(`https://www.google.com/search?q=${gymName} Gym`, '_blank');
+                };
+    
+                document.getElementById('gymImageContainer').innerHTML = '';
+                document.getElementById('gymImageContainer').appendChild(gymImage);
+    
+            } catch (error) {
+                console.error('An error occurred:', error);
+                isGymInfoFetched = false;
+            }
+        }
+    
+        function getUserLocation() {
+            if (!isGymInfoFetched) {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition((position) => {
+                        sendCoordinatesToServer(position.coords.latitude, position.coords.longitude);
+                    });
+                } else {
+                    console.log("Geolocation is not supported by this browser.");
+                }
+            }
+        }
+    
+        window.addEventListener("load", function() {
+            getUserLocation();
+        });
+    </script>
+
+    <script>
+        window.addEventListener("load", function() {
+            // Only make the request if the gym info has not been fetched
+            if (!isGymInfoFetched) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    let lat = position.coords.latitude;
+                    let lon = position.coords.longitude;
+                    sendCoordinatesToServer(lat, lon);
+                });
+            }
+        });
+    </script>
+    <script>
+        window.addEventListener("load", sendCoordinatesToServer);
+
+        navigator.geolocation.getCurrentPosition((position) => {
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
+            sendCoordinatesToServer(lat, lon);
+          });
+    </script>
+<script>
+    window.addEventListener("DOMContentLoaded", (event) => {
+        // Get the text content of the BMR, TDEE, and Daily Limit
+        const bmr = document.getElementById("bmrValue").textContent;
+        const tdee = document.getElementById("tdeeValue").textContent;
+        const dailyLimit = document.getElementById("dailyLimitValue").textContent;
+      
+        // Set the text content of the ticker items
+        document.getElementById("bmrTicker").textContent = `BMR: ${bmr}`;
+        document.getElementById("tdeeTicker").textContent = `TDEE: ${tdee}`;
+        document.getElementById("dailyLimitTicker").textContent = `Daily Limit: ${dailyLimit}`;
+      });
+</script>
+<script>
+    // Function to get user's longitude and latitude
+   
+</script>
+    <style>
+        .gym-container {
+            position: relative;
+            padding: 10px;
+            animation: fireFlicker 1s infinite;
+            font-size: 25px;
+            text-align: center;
+            white-space: nowrap;  /* Prevents text from wrapping onto the next line */
+        }
+        
+        .gym-container img {
+            display: block;
+            max-width: 100%;  /* Ensuring the image doesn't exceed container width */
+            border: 2px solid transparent; /* Transparent border to maintain the layout */
+        }
+        
+        .gym-container::before {
+            content: "";
+            position: absolute;
+            top: -10px;  /* Adjust to position the gradient border correctly */
+            right: -10px;
+            bottom: -10px;
+            left: -10px;
+            z-index: -1;
+            background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+            background-size: 200% 200%;
+            border: 10px solid rgba(6,127,127,1);
+            animation: gradientAnimation 3s infinite;
+        }
+        
+        .bmr-container, 
+        .tdee-container, 
+        .daily_limit-container, 
+        .single-chart-container {
+            position: relative;
+            background-color: rgb(49, 49, 49);  /* Solid grey background */
+            border: 2px solid transparent; /* Transparent border to maintain the layout */
+            padding: 5px;
+            animation: fireFlicker 1s infinite;
+        }
+        
+        .bmr-container::before, 
+        .tdee-container::before, 
+        .daily_limit-container::before, 
+        .single-chart-container::before {
+            content: "";
+            position: absolute;
+            top: -10px;  /* Adjust to position the gradient border correctly */
+            right: -10px;
+            bottom: -10px;
+            left: -10px;
+            z-index: -1;
+            background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+            background-size: 200% 200%;
+            border: 10px solid rgba(6,127,127,1);
+            animation: gradientAnimation 3s infinite;
+        }
+        
+        .bmr-label, 
+        .bmr-value, 
+        .tdee-label, 
+        .tdee-value, 
+        .daily_limit-label, 
+        .daily_limit-value {
+            color: white;  /* Filling the text with white color */
+        }
+    </style>
+    <script>
+        // Minimize the chat on page load
+        toggleChat();
+    </script>
+    <script>
+        window.addEventListener('load', function () {
+            var loadingScreen = document.getElementById('loading-screen');
+            setTimeout(function () {
+                loadingScreen.style.display = 'none';
+            }, 1000);
+        });
+    </script>
+</body>
+
+</html>

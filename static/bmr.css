@@ -1,0 +1,23 @@
+.bmr-container {
+    background-color: #131212;
+    border: 1px solid #FF6384;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+
+}
+
+.bmr-label {
+    font-size: 1.2em;
+    color: #FF6384;
+}
+
+.bmr-value {
+    font-size: 2em;
+    font-weight: bold;
+    color: #FF6384; /* Adjust the color as desired */
+    margin-top: 5px;
+}
+
+

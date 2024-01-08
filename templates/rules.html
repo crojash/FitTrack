@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- just some general stuff -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Forum</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/x-icon" href="static/logo.png">
+  </head>
+  <body> <!-- page body goes here -->
+    <nav class="navbar navbar-light bg-light">
+      <a class="logo" href="/">
+        <img src="static/logo.png" alt="logo" height="40" width="40"/>
+        <h1>Flask Forum</h1>
+      </a>
+      <a class="profile" href="/profile">
+        <img src="static/profile.png" title="account" alt="profile" height="55" width="55"/>
+      </a>
+      <ul>
+        <li><a href="/forum">Forum</a></li>
+        <li><a href="/rules">Rules</a></li>
+      </ul>
+    </nav>
+    <div style="padding: 20px; margin-top: 50px;"></div>
+    <center>
+    <h1>Forum Rules</h1>
+    <h4>Place your rules here!</h4>
+    <li>
+      <p>A rule</p>
+      <p>Another Rule</p>
+      <p>Sus Is Against The Rules!</p>
+    </li>
+    </center>
+  </body>
+  
+</html>

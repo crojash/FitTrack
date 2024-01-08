@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat</title>
+    <script src="https://cdn.socket.io/socket.io-3.1.3.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var socket = io.connect('https://' + document.domain + ':' + location.port);
+            socket.on('connect', function() {
+                socket.send('User has connected!');
+            });
+            socket.on('message', function(msg) {
+                $("#messages").append('<li>' + msg + '</li>');
+            });
+            $('#sendbutton').on('click', function() {
+                console.log('Button clicked');
+                socket.send($('#myMessage').val());
+                $('#myMessage').val('');
+            });
+            
+        });
+    </script>
+</head>
+<body>
+    <ul id="messages"></ul>
+    <input type="text" id="myMessage">
+    <button id="sendbutton">Send</button>
+</body>
+</html>

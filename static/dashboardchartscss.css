@@ -1,0 +1,132 @@
+.charts-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.single-chart-container {
+    width: calc(33.33% - 20px);
+    margin-top: 20px;
+    box-sizing: border-box;
+    border: 1px solid #555;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    background-color: #343a40;
+    height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Apply the same color scheme to all charts */
+.single-chart-container canvas {
+    max-width: 100%;
+    height: 100% !important;
+    background-color: #343a40;
+}
+.image-container22 {
+    display: flex;
+    justify-content: center;
+    margin-top: 75px;
+}
+
+.image-container22 img {
+    max-width: 12%;
+}
+.gym-container {
+    padding: 10px;
+    border: 1px solid #555;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    background-color: #343a40;
+    color: white;
+}
+
+/* Existing and updated CSS */
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.custom-navbar-nav {
+    display: flex;
+    align-items: center;
+}
+
+.nav-item.ticker {
+    flex-grow: 1;
+    list-style-type:none;
+}
+
+.ticker-box {
+    border: 2px solid white;
+    padding: 0;
+    margin: 0;
+    background-color: #333;
+    color: white;
+}
+#bmrTicker {
+    background-color: #1E88E5; /* Example blue color */
+    border-color: #1E88E5;
+}
+
+#tdeeTicker {
+    background-color: #E53935; /* Example red color */
+    border-color: #E53935;
+}
+
+#dailyLimitTicker {
+    background-color: #43A047; /* Example green color */
+    border-color: #43A047;
+}
+
+#weatherValue {
+    background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+    background-size: 200% 200%;
+    border-color: rgba(6,127,127,1); /* Taking the start color of the gradient for the border */
+    animation: gradientAnimation 3s infinite, fireFlicker 1s infinite;
+    
+    /* Applying the gradient to the text */
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+.ticker {
+    overflow: hidden;
+    white-space: nowrap;
+    animation: ticker 44s linear infinite;
+    width: 100%;
+    height: 100%;
+}
+
+.ticker-wrap {
+    display: inline-block;
+    width: 100%;  /* Sets a boundary for the ticker */
+    animation: ticker 30s linear infinite;  
+}
+
+.ticker-item {
+    display: inline-block;
+}
+@keyframes ticker {
+    0% { transform: translateX(100%); }      /* Start position: off-screen right */
+    100% { transform: translateX(-100%); }  /* End position: off-screen left */
+}
+#ok-button {
+    display: block;
+    margin: 0 auto;
+    padding: 100px 20px;
+    color: bold;
+}
+.charts-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 96px;
+}
+
+.single-chart-container {
+    width: calc(33.33% - 20px);
+}

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - FitTrack</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleslogin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesforlogin2.css') }}">
+    <link rel="stylesheet" type="text/css" href="/static/navbarstyles.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/static/footers.css">
+
+
+</head>
+
+
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show animated-link" role="alert" style="z-index:9999; padding: 15px;">
+          {{ message }}
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <div id="loading-screen" style="display:flex; align-items:center; justify-content:center; position:fixed; width:100%; height:100vh; z-index:9999; background-color:#1c1c1c;">
+        <img src="/static/images/test1.png" alt="FitTrack" height="500" class="header-img">
+    </div>
+    <div class="container mt-4">
+        <nav class="navbar navbar-expand-lg navbar-dark rounded">
+            <a class="navbar-brand" href="#">FitTrack</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="fullPageMenu" id="nav">
+                <div class="banner">
+                    <img src="/static/images/test1.png" alt="image">
+                </div>
+                <div class="nav">
+                    <ul>
+                        <li><a href="/" data-text="Home">Home</a></li>
+                        <li><a href="/login" data-text="Login">Login</a></li>
+                        <li><a href="/logout" data-text="Logout">Logout</a></li>
+                        <li><a href="/contact" data-text="Contact">Contact</a></li>
+                        <li><a href="/dashboard" data-text="Dashboard">Dashboard</a></li>
+                    </ul>
+                </div>
+                <span class="menuicon" id="toggle" onclick="menuToggle()"></span>
+            </div>
+        </nav>
+        <style>
+            .nav a {
+                position: relative;
+                display: inline-block;
+                padding: 5px 0;
+            }
+            .nav a:before {
+                content: attr(data-text);
+                position: absolute;
+                top: 100%;
+                left: 0;
+                opacity: 0;
+                transition: opacity 0.2s ease-out;
+                z-index: 1;
+                white-space: nowrap;
+            }
+            .nav a:hover:before,
+            .nav a:focus:before {
+                opacity: 1;
+            }
+        </style>
+        <script>document.addEventListener('DOMContentLoaded', () => {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.style.display = 'none';
+                }, 4000);
+            });
+        });</script>
+        <script>
+            function menuToggle() {
+                var nav = document.getElementById("nav");
+                var toggle = document.getElementById("toggle");
+                nav.classList.toggle("active");
+                toggle.classList.toggle("active");
+            }
+            document.addEventListener('DOMContentLoaded', () => {
+                setActiveMenuItem();
+            });
+        </script>
+        <style>
+            
+        </style>
+        <section class="login-section text-center">
+            <img src="/static/images/test1.png" alt="FitTrack" height="225" class="header-img2" style="margin-top: 125px;">
+            <div class="container" id="container">
+                <div class="form-container sign-up-container">
+                    <form action="/signup" method="post" onsubmit="return validateSignup();">
+                        <h1>Create Account</h1>
+                        <input type="text" placeholder="Name" name="name" required />
+                        <input type="email" placeholder="Email" name="email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" />
+                        <input type="password" placeholder="Password" name="password" required minlength="8" />
+                        <button type="submit" class="ghost animated-link" id="signup">Sign up</button>
+                    </form>
+                </div>
+                <div class="form-container sign-in-container">
+                    <form action="/login" method="post" onsubmit="return validateLogin();">
+                        <h1>Sign in</h1>
+                        <h2>Welcome Back!</h2>
+                        <input type="email" placeholder="Email" name="email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" />
+                        <input type="password" placeholder="Password" name="password" required />
+                        <button type="submit" class="ghost animated-link" id="signup">Sign in</button>
+                        {% if success %}
+                        <div class="alert alert-success" role="alert">
+                            Your message has been sent successfully
+                        </div>
+                        {% endif %}
+                        <a href="{{url_for('reset_request')}}" class="ghost animated-link" id="reset-password">Forgot Password</a>                    </form>
+                </div>
+                <div class="overlay-container">
+                    <div class="overlay">
+                        <div class="overlay-panel overlay-left">
+                            <h1>Welcome Back to FitTrack!</h1>
+                            <p>Log in to access your fitness journey.</p>
+                            <button class="ghost animated-link" id="signIn">Sign In <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span></button>
+                        </div>
+                        <div class="overlay-panel overlay-right">
+                            <h1>Join the FitTrack Community!</h1>
+                            <p>Register now and embark on your fitness adventure with us.</p>
+                            <button class="ghost animated-link" id="signUp">
+                                Sign Up
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </button>
+                        </div>
+                        
+                </div>
+            </div>
+        </section>
+        
+        <footer>
+            <a href="#">
+                FitTrack &copy; 2023
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </a>
+        </footer>
+    </div>
+    <script>
+        const signUpButton = document.getElementById('signUp');
+        const signInButton = document.getElementById('signIn');
+        const container = document.getElementById('container');
+        signUpButton.addEventListener('click', () => {
+            container.classList.add("right-panel-active");
+        });
+        signInButton.addEventListener('click', () => {
+            container.classList.remove("right-panel-active");
+        });
+    </script>
+    <script>
+        window.addEventListener('load', function () {
+            var loadingScreen = document.getElementById('loading-screen');
+            setTimeout(function () {
+                loadingScreen.style.display = 'none';
+            }, 2000);
+        });
+    </script>
+        <script>
+            function validateSignup() {
+                var email = document.forms[0]["email"].value;
+                var password = document.forms[0]["password"].value;
+                
+                var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+                if (!emailPattern.test(email)) {
+                    alert("Invalid email format.");
+                    return false;
+                }
+                
+                if (password.length < 8) {
+                    alert("Password should be at least 8 characters long.");
+                    return false;
+                }
+                return true;
+            }
+        
+            function validateLogin() {
+                var email = document.forms[1]["email"].value;
+                
+                var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+                if (!emailPattern.test(email)) {
+                    alert("Invalid email format.");
+                    return false;
+                }
+                
+                return true;
+            }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

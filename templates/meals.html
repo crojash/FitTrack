@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>FitTrack-Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link rel="stylesheet" type="text/css" href="static/dashboardstyles.css">
+    <link rel="stylesheet" type="text/css" href="static/sidebarstyles.css">
+    <link rel="stylesheet" type="text/css" href="static/bmr.css">
+    <link rel="stylesheet" type="text/css" href="static/tdee.css">
+    <link rel="stylesheet" type="text/css" href="static/dailylimit.css">
+    <link rel="stylesheet" type="text/css" href="static/dashboardchartscss.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/scripts/fetchchathistory.js"></script>
+    <script src="/static/scripts/calories.js"></script>
+    <script src="/static/scripts/togglechat.js"></script>
+    <script src="/static/scripts/chat.js"></script>
+    <script src="/static/scripts/meals.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/navbarstyles.css">
+    <link rel="stylesheet" type="text/css" href="/static/meals.css">
+
+</head>
+
+<body>
+
+    <h1 id="meals">Meal Recommendation</h1>
+    <div class="outer-div">
+        <div class="container">
+            <!-- Breakfast Chart Container -->
+            <div id="randomBreakfast" class="single-container">
+            <h1>Breakfast</h1>
+            <div class="inner-div">
+                <h2 id="bName"></h2>
+                <h5>Ingredients</h5>
+                <h7 id="bIngredients"></h7>
+                <h5>----------------------------------------------------</h5>
+                <h7><span id="bProtein"></span></h7>
+                <h7><span id="bCarbs"></span></h7>
+                <h7><span id="bFat"></span></h7>
+                <h7><span id="bCalories"></span></h7>
+            </div>
+            <button id="processBreakfast" onclick="displayNewBreakfast()" class="next-buttons" type="button">More</button>
+            <button id="addBreakfastToPlan" onclick="addBreakfast()" class="next-buttons" type="button">Add</button>
+            </div>
+        </div>
+
+
+        <div class="container">
+            <!-- Breakfast Chart Container -->
+            <div id="randomLunch" class="single-container">
+                <h1>Lunch</h1>
+                <div class="inner-div">
+                <h2 id="lName"></h2>
+                <h5>Ingredients</h5>
+                <h7 id="lIngredients"></h7>
+                <h5>----------------------------------------------------</h5>
+                <h7><span id="lProtein"></span></h7>
+                <h7><span id="lCarbs"></span></h7>
+                <h7><span id="lFat"></span></h7>
+                <h7><span id="lCalories"></span></h7>
+                </div>
+                <button id="processLunch" onclick="displayNewLunch()" class="next-buttons" type="button">More</button>
+                <button id="addLunchToPlan" onclick="addLunch()" class="next-buttons" type="button">Add</button>
+            </div>
+        </div>
+
+        <div class="container">
+        <!-- Breakfast Chart Container -->
+        <div id="randomSnack" class="single-container">
+            <h1>Snacks</h1>
+            <div class="inner-div">
+            <h2 id="sName"></h2>
+            <h5>Ingredients</h5>
+            <h7 id="sIngredients"></h7>
+            <h5>----------------------------------------------------</h5>
+            <h7><span id="sProtein"></span></h7>
+            <h7><span id="sCarbs"></span></h7>
+            <h7><span id="sFat"></span></h7>
+            <h7><span id="sCalories"></span></h7>
+            </div>
+            <button id="processSnack" onclick="displayNewSnack()" class="next-buttons" type="button">More</button>
+            <button id="addSnackToPlan" onclick="addSnack()" class="next-buttons" type="button">Add</button>
+        </div>
+        </div>
+
+        <div class="container">
+        <!-- Breakfast Chart Container -->
+        <div id="randomDinner" class="single-container">
+            <h1>Dinner</h1>
+            <div class="inner-div">
+            <h2 id="dName"></h2>
+            <h5>Ingredients</h5>
+            <h7 id="dIngredients"></h7>
+            <h5>----------------------------------------------------</h5>
+            <h7><span id="dProtein"></span></h7>
+            <h7><span id="dCarbs"></span></h7>
+            <h7><span id="dFat"></span></h7>
+            <h7><span id="dCalories"></span></h7>
+            </div>
+            <button id="processDinner" onclick="displayNewDinner()" class="next-buttons" type="button">More</button>
+            <button id="addDinnerToPlan" onclick="addDinner()" class="next-buttons" type="button">Add</button>
+        </div>
+        </div>
+    </div>
+      <script>
+        var my_dict_list = {{ my_dict_list | default([]) | tojson | safe }};
+        console.log(my_dict_list);
+
+        function displayData(data, name, ingredients, protein, carbs, fat, calories){
+            const bName = document.getElementById(name);
+            const bIngredients = document.getElementById(ingredients);
+            const bProtein = document.getElementById(protein);
+            const bCarbs = document.getElementById(carbs);
+            const bFat= document.getElementById(fat);
+            const bCalories= document.getElementById(calories);
+            bName.innerHTML = data.foodname;
+            bIngredients.innerHTML = getIngredients(data.ingredients);
+            bProtein.innerHTML = "Protein: " + data.protein;
+            bCarbs.innerHTML = "Carbs: " + data.carbs;
+            bFat.innerHTML= "Fat: " + data.fat;
+            bCalories.innerHTML= "Total Calories: " + data.calories;
+        }
+        function displayNewBreakfast(){
+            fetch('/get_random_breakfast')
+            .then(response => response.json())
+            .then(newData =>{
+                displayData(newData, "bName", "bIngredients", "bProtein", "bCarbs", "bFat", "bCalories")
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+        
+        function displayNewLunch(){
+            fetch('/get_random_lunch')
+            .then(response => response.json())
+            .then(newData =>{
+                displayData(newData, "lName", "lIngredients", "lProtein", "lCarbs", "lFat", "lCalories")
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+        
+        function displayNewSnack(){
+            fetch('/get_random_snack')
+            .then(response => response.json())
+            .then(newData =>{
+                displayData(newData, "sName", "sIngredients", "sProtein", "sCarbs", "sFat", "sCalories")
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+        
+        function displayNewDinner(){
+            fetch('/get_random_dinner')
+            .then(response => response.json())
+            .then(newData =>{
+                displayData(newData, "dName", "dIngredients", "dProtein", "dCarbs", "dFat", "dCalories")
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+        
+
+        /*These events will display information in the containers as default*/
+        document.addEventListener('DOMContentLoaded', () => {
+            displayData(my_dict_list[0], "bName", "bIngredients", "bProtein", "bCarbs", "bFat", "bCalories");
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            displayData(my_dict_list[1], "sName", "sIngredients", "sProtein", "sCarbs", "sFat", "sCalories");
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            displayData(my_dict_list[2], "dName", "dIngredients", "dProtein", "dCarbs", "dFat", "dCalories");
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            displayData(my_dict_list[3], "lName", "lIngredients", "lProtein", "lCarbs", "lFat", "lCalories");
+        });
+        /*This function will separate the ingredients which are sent from python as string. We will spit them and return them in each line*/
+        function getIngredients(my_string){
+            return_string = "";
+            var array = my_string.split(/,(?![^()]*\))/);
+            for(element of array){
+                return_string = return_string + element + "<br/>";
+            }return return_string;
+        }
+
+
+
+        function addBreakfast(){
+            // Gather data from HTML elements
+            var breakfastToSend = {
+                name: document.getElementById("bName").textContent,
+                ingredients: document.getElementById("bIngredients").textContent,
+                carbs: document.getElementById("bCarbs").textContent,
+                protein: document.getElementById("bProtein").textContent,
+                fat: document.getElementById("bFat").textContent,
+                calories: document.getElementById("bCalories").textContent,
+            };
+
+            // Send data to Flask route
+            fetch('/fetchBreakfast', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(breakfastToSend),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Brakfast added to meal plan");
+                console.log('Data sent successfully:', data);
+            })
+            .catch(error => {
+                console.error('Error sending data:', error);
+            });
+
+        }function addDinner(){
+            // Gather data from HTML elements
+            var dinnerToSend = {
+                name: document.getElementById("dName").textContent,
+                ingredients: document.getElementById("dIngredients").textContent,
+                carbs: document.getElementById("dCarbs").textContent,
+                protein: document.getElementById("dProtein").textContent,
+                fat: document.getElementById("dFat").textContent,
+                calories: document.getElementById("dCalories").textContent,
+            };
+
+            // Send data to Flask route
+            fetch('/fetchDinner', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dinnerToSend),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Dinner added to meal plan");
+                console.log('Data sent successfully:', data);
+            })
+            .catch(error => {
+                console.error('Error sending data:', error);
+            });
+
+        }function addSnack(){
+            // Gather data from HTML elements
+            var snackToSend = {
+                name: document.getElementById("sName").textContent,
+                ingredients: document.getElementById("sIngredients").textContent,
+                carbs: document.getElementById("sCarbs").textContent,
+                protein: document.getElementById("sProtein").textContent,
+                fat: document.getElementById("sFat").textContent,
+                calories: document.getElementById("sCalories").textContent,
+            };
+
+            // Send data to Flask route
+            fetch('/fetchSnack', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(snackToSend),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Snack added to meal plan");
+                console.log('Data sent successfully:', data);
+            })
+            .catch(error => {
+                console.error('Error sending data:', error);
+            });
+
+        }
+        function addLunch(){
+                        // Gather data from HTML elements
+            var lunchToSend = {
+                name: document.getElementById("lName").textContent,
+                ingredients: document.getElementById("lIngredients").textContent,
+                carbs: document.getElementById("lCarbs").textContent,
+                protein: document.getElementById("lProtein").textContent,
+                fat: document.getElementById("lFat").textContent,
+                calories: document.getElementById("lCalories").textContent,
+            };
+
+            // Send data to Flask route
+            fetch('/fetchLunch', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(lunchToSend),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Lunch added to meal plan");
+                console.log('Data sent successfully:', data);
+            })
+            .catch(error => {
+                console.error('Error sending data:', error);
+            });
+
+        }
+
+        
+
+    </script>
+
+
+    <script>
+        window.addEventListener('load', function () {
+            var loadingScreen = document.getElementById('loading-screen');
+            setTimeout(function () {
+                loadingScreen.style.display = 'none';
+            }, 1000);
+        });
+    </script>
+
+
+
+                                    <!-- All normal functionalities -->
+
+<!-- Navigation Bar -->
+<!-- Navigation Bar -->
+<div class="container mt-4">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark rounded">
+        <a class="navbar-brand" href="#" style="margin-left: 48px; background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">FitTrack</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Full Page Menu -->
+        <div class="fullPageMenu" id="nav">
+            <div class="banner">
+                <img src="/static/images/test1.png" alt="image">
+            </div>
+            <div class="nav">
+                <ul>
+                    <li><a href="/" data-text="Home">Home</a></li>
+                    <li><a href="/login" data-text="Login">Login</a></li>
+                    <li><a href="/logout" data-text="Logout">Logout</a></li>
+
+                    <li><a href="/contact" data-text="Contact">Contact</a></li>
+                    <li><a href="/dashboard" data-text="Dashboard">Dashboard</a></li>
+
+                </ul>
+                
+            </div>
+        </div>
+        <li class="nav-item ticker">
+            <div class="ticker-wrap">
+                
+             
+                <div class="ticker-item ticker-box" id="weatherValue"></div>
+            </div>
+        </li>
+        <!-- Toggle Button -->
+        <span class="menuicon" id="toggle" onclick="menuToggle()"></span>
+    </nav>
+
+    <script>
+        function menuToggle() {
+            var nav = document.getElementById("nav");
+            var toggle = document.getElementById("toggle");
+            
+            // Toggle the menu
+            nav.classList.toggle("active");
+            toggle.classList.toggle("active");
+        }
+        
+        // Call the function when the DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            setActiveMenuItem();
+        });
+    </script>
+    <style>
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 100% 0%;
+            }
+            100% {
+                background-position: 0% 100%;
+            }
+        }
+        @keyframes flameAnimation {
+            0% {
+                transform: translateY(0px) scale(1);
+                opacity: 0.9;
+            }
+            50% {
+                transform: translateY(-10px) scale(1.05);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(0px) scale(1);
+                opacity: 0.9;
+            }
+        }
+        @keyframes fireFlicker {
+            0% {
+                box-shadow: 
+                    0 0 5px rgba(6,127,127,0.8), 
+                    0 5px 15px rgba(212,35,143,0.8), 
+                    2px 2px 10px rgba(6,127,127,0.8);
+            }
+            33% {
+                box-shadow: 
+                    0 2px 15px rgba(212,35,143,0.8), 
+                    -2px -2px 10px rgba(6,127,127,0.8), 
+                    2px -2px 10px rgba(212,35,143,0.8);
+            }
+            66% {
+                box-shadow: 
+                    -2px 0 15px rgba(6,127,127,0.8), 
+                    2px 2px 15px rgba(212,35,143,0.8), 
+                    -2px -2px 10px rgba(6,127,127,0.8);
+            }
+            100% {
+                box-shadow: 
+                    0 0 5px rgba(6,127,127,0.8), 
+                    0 5px 15px rgba(212,35,143,0.8), 
+                    2px 2px 10px rgba(6,127,127,0.8);
+            }
+        }
+        span {
+            background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(6,127,127,0.5);
+            animation: gradientAnimation 3s infinite;
+            text-decoration: darkblue;
+        }
+        
+        .username {
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(6,127,127,0.5);
+            animation: gradientAnimation 3s infinite, fireFlicker 1s infinite;
+            line-height: 1;
+            border: 20px solid rgba(6,127,127,1);
+        }
+        .username::before {
+            content: attr(data-text); /* This fetches the text from the data-text attribute */
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: white; /* This gives the text a white fill */
+            z-index: 1; /* This ensures the white text is on top of the glowing text */
+            pointer-events: none; /* Ensures any interactions pass through this element to underlying elements */
+        }
+        </style>
+  <!-- Sidebar -->
+<input type="checkbox" id="check" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+<label for="check">
+    <i class="fas fa-bars" id="btn" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);"></i>
+    <i class="fas fa-times" id="cancel" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);"></i>
+</label>
+<div class="sidebar">
+    <header>
+        <div class="user-info">
+            <span style="font-size: 25px;"><span class="username" data-text="{{ username }}">{{ username }}</span></span>
+        </div>
+    </header>
+    <a href="/dashboard" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+        <i class="fas fa-qrcode"></i>
+        <span>Dashboard</span>
+    </a>
+    <a href="/goals" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+        <i class="fa fa-bullseye"></i>
+        <span>Goals</span>
+    </a>
+    <a href="#" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+        <i class="fa fa-book"></i>
+        <span>Log Food</span>
+    </a>
+    <a href="#" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+        <i class="fa fa-heartbeat"></i>
+        <span>Log Exercise</span>
+    </a>
+    <a href="/meals" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+        <span>Meal Recommendations</span>
+    </a>
+    <a href="/planning" style="background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(6,127,127,0.5);">
+        <span>Meal planning</span>
+    </a>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebarLinks = document.querySelectorAll('.sidebar a');
+        const currentURL = window.location.pathname;
+    
+        sidebarLinks.forEach(link => {
+            if (link.getAttribute('href') === currentURL) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    });
+    </script>
+    <style>
+        
+        input[type="text"], input[type="range"], select {
+            background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(6,127,127,0.5);
+            animation: gradientAnimation 3s infinite, fireFlicker 1s infinite;
+            border: 2px solid rgba(6,127,127,1);
+            padding: 5px;
+        }
+        input[type="text"]::placeholder, select option {
+          color: white;
+          -webkit-text-fill-color: white;
+          pointer-events: none;
+        }
+        
+        input[type="submit"] {
+          background: linear-gradient(90deg, rgba(6,127,127,1) 0%, rgba(212,35,143,1) 100%);
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+          text-shadow: 2px 2px 4px rgba(6,127,127,0.5);
+          animation: gradientAnimation 3s infinite, fireFlicker 1s infinite;
+        }
+        
+        input[type="submit"]:hover {
+          background-position: 0% 100%;
+        }
+    </style>
+
+    <!-- If user has not submitted any info on the goals page, display this error message. -->
+    {% if error_message %}
+    <div class="alert alert-danger" id="error-alert" style="z-index:999;">
+        <p>{{error_message}}</p>
+        <button id="ok-button">OK</button>
+    </div>
+    {% endif %}
+
+    <script>
+        // Get the alert box element and OK button
+        var alertBox = document.getElementById("error-alert");
+        var okButton = document.getElementById("ok-button");
+
+        // Show the alert box
+        alertBox.style.display = "block";
+
+        // Attach a click event to the OK button
+        okButton.addEventListener("click", function () {
+            alertBox.style.display = "none"; // Hide the alert box when OK is clicked
+            window.location.href = "/goals"; // Redirect user to the goals page after OK is clicked
+        });
+    </script>
+
+    <div class="chat-container">
+        <div class="chat-header" id="chat-header" onclick="toggleChat()">
+            <div class="chat-header-content">
+                <img src="/static/images/fittrack.jpg" alt="FitTrack" height="45" class="chat-header-logo">
+                <h4 class="chat-header-title">FitTrack Chat</h4>
+            </div>
+            <button id="minimize-button" class="minimize-button =ghost animated-link"><i class="fas fa-window-minimize"></i></button>
+        </div>
+        <div class="chat-history" id="chat-history">
+            <!-- Chat history will be dynamically added here -->
+            <div class="message assistant-message">
+                <strong>FitTrack-GPT:</strong>
+                <p>Hi there! Please feel free to ask any questions.</p>
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="user-message" class="user-message-input" placeholder="Type your message...">
+            <button onclick="sendMessage()" class="send-button">Send</button>
+        </div>
+        <!-- Loading animation container -->
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+  
+
+    <script>
+        document.getElementById('user-message').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+
+<script>
+    navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        fetch('/weather', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ latitude, longitude }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('weatherValue').innerText = `Temperature: ${data.weather} , Humidity: ${data.humidity}%, Description: ${data.description}, Place: ${data.place}`;
+        })
+        .catch((error) => {
+            console.error('Error fetching weather:', error);
+        });
+    });
+    
+    
+</script>
+    
+    <script>
+        // Minimize the chat on page load
+        toggleChat();
+    </script>
+    <script>
+        window.addEventListener('load', function () {
+            var loadingScreen = document.getElementById('loading-screen');
+            setTimeout(function () {
+                loadingScreen.style.display = 'none';
+            }, 1000);
+        });
+    </script>
+   
+</body>
+
+</html>
